@@ -6,7 +6,7 @@ import com.juawapps.whatstowatch.common.data.Result
 import com.juawapps.whatstowatch.common.data.toResult
 import com.juawapps.whatstowatch.movies.data.api.MoviesApi
 import com.juawapps.whatstowatch.movies.data.model.MovieListItemDTO
-import com.juawapps.whatstowatch.movies.domain.model.MovieDetail
+import com.juawapps.whatstowatch.movies.domain.model.MovieDetails
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 import com.juawapps.whatstowatch.movies.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
     private val moviesListMapper: ListMapper<MovieListItemDTO, MovieListItem>,
-    private val moviesDetailMapper: Mapper<MovieListItemDTO, MovieDetail>
+    private val moviesDetailsMapper: Mapper<MovieListItemDTO, MovieDetails>
 ) : MoviesRepository {
     override fun discoverMovies(): Flow<Result<List<MovieListItem>>> = flow {
         val result = try {
@@ -27,9 +27,9 @@ class MoviesRepositoryImpl @Inject constructor(
         emit(result)
     }
 
-    override fun getMovieDetails(id: Long): Flow<Result<MovieDetail>> = flow {
+    override fun getMovieDetails(id: Long): Flow<Result<MovieDetails>> = flow {
         val result = try {
-            moviesApi.getMovieDetails(id).toResult(moviesDetailMapper::map)
+            moviesApi.getMovieDetails(id).toResult(moviesDetailsMapper::map)
         } catch (exception: Exception) {
             Result.Error(exception)
         }

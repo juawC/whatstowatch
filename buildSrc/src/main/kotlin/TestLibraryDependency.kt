@@ -11,7 +11,8 @@ object TestLibraryDependency {
         const val MOCKK = "1.9.3"
         const val ANDROID_X_TEST = "1.2.0"
         const val COROUTINES_ANDROID = "1.3.2"
-        const val FRAGMENT_VERSION = "1.2.5"
+        const val FRAGMENT = "1.2.5"
+        const val FIXTURE = "0.9.4"
     }
 
     // Base framework
@@ -25,13 +26,14 @@ object TestLibraryDependency {
     const val ANDROID_X_TEST_KTS = "androidx.test:core-ktx:${Version.ANDROID_X_TEST}"
     const val TEST_ORCHESTRATOR = "androidx.test:orchestrator:${Version.TEST_RUNNER}"
 
-    // Mock
+    // Mock / Fixtures
     const val MOCKK = "io.mockk:mockk:${Version.MOCKK}"
     const val MOCKK_ANDROID = "io.mockk:mockk-android:${Version.MOCKK}"
+    const val FIXTURES = "com.appmattus.fixture:fixture:${Version.FIXTURE}"
 
     // Espresso / UI
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core:${Version.ESPRESSO_CORE}"
-    const val FRAGMENT_TESTING = "androidx.fragment:fragment-testing:${Version.FRAGMENT_VERSION}"
+    const val FRAGMENT_TESTING = "androidx.fragment:fragment-testing:${Version.FRAGMENT}"
     const val HILT_TESTING = "com.google.dagger:hilt-android-testing:${CommonVersion.HILT}"
     const val HILT_TESTING_COMPILER = "com.google.dagger:hilt-android-compiler:${CommonVersion.HILT}"
 

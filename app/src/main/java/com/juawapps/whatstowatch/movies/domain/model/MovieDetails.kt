@@ -3,7 +3,7 @@ package com.juawapps.whatstowatch.movies.domain.model
 import com.juawapps.whatstowatch.common.domain.ImageUrl
 import java.util.*
 
-data class MovieDetail(
+data class MovieDetails(
     val posterPath: ImageUrl,
     val overview: String,
     val releaseDate: Date,

@@ -108,6 +108,7 @@ dependencies {
     testImplementation(TestLibraryDependency.TEST_CORE)
     testImplementation(TestLibraryDependency.TEST_RULES)
     testImplementation(TestLibraryDependency.TEST_ARCH)
+    testImplementation(TestLibraryDependency.FIXTURES)
 
     androidTestImplementation(TestLibraryDependency.ANDROID_TEST_JUNIT)
     androidTestImplementation(TestLibraryDependency.TEST_RUNNER)
