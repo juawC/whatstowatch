@@ -7,9 +7,9 @@ data class MovieListItem(
     val posterImage: ImageUrl,
     val releaseDate: Date,
     val genreIds: List<Int>,
-    val id: Int,
+    val id: Long,
     val originalTitle: String,
     val originalLanguage: String,
     val title: String,
-    val popularity: Float
+    val voteAverage: Float
 )

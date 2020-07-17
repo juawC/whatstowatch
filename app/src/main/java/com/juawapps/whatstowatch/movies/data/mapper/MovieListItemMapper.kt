@@ -21,7 +21,7 @@ class MovieListItemMapper @Inject constructor(
                 originalTitle,
                 originalLanguage,
                 title,
-                popularity
+                voteAverage
             )
         }
     }
