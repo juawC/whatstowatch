@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class MovieDTO(
+data class MovieListItemDTO(
     @Json(name = "poster_path") val posterPath: String?,
     @Json(name = "adult") val adult: Boolean,
     @Json(name = "overview") val overview: String,
@@ -18,5 +18,6 @@ data class MovieDTO(
     @Json(name = "backdrop_path") val backdropPath: String?,
     @Json(name = "popularity") val popularity: Float,
     @Json(name = "vote_count") val voteCount: Long,
-    @Json(name = "vote_average") val video: Float
+    @Json(name = "video") val video: Boolean,
+    @Json(name = "vote_average") val voteAverage: Float
 )
