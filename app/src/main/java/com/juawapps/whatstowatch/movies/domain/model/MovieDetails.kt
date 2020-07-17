@@ -8,7 +8,7 @@ data class MovieDetails(
     val overview: String,
     val releaseDate: Date,
     val genreIds: List<Int>,
-    val id: Int,
+    val id: Long,
     val originalTitle: String,
     val originalLanguage: String,
     val title: String,

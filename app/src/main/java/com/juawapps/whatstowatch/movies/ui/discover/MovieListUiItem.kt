@@ -2,6 +2,7 @@ package com.juawapps.whatstowatch.movies.ui.discover
 
 import com.juawapps.whatstowatch.R
 import com.juawapps.whatstowatch.common.domain.ImageUrl
+import com.juawapps.whatstowatch.common.ui.calendarYear
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 
 data class MovieListUiItem(
@@ -11,17 +12,22 @@ data class MovieListUiItem(
     val language: String,
     val title: String,
     val voteAverage: String,
-    val voteColor: Int
-)
+    val voteColorAttr: Int
+) {
 
-fun MovieListItem.mapToUi(): MovieListUiItem {
-    return MovieListUiItem(
-        posterImage,
-        releaseDate.toString(),
-        id,
-        originalLanguage,
-        title,
-        voteAverage.toString(),
-        R.color.green
-    )
+    companion object Factory {
+        fun create(movieListItem: MovieListItem): MovieListUiItem {
+            return with(movieListItem) {
+                MovieListUiItem(
+                    posterImage,
+                    releaseDate.calendarYear.toString(),
+                    id,
+                    originalLanguage,
+                    title,
+                    String.format("%.1f", voteAverage),
+                    if (voteAverage >= 0.7) R.attr.positiveColor else R.attr.mehColor
+                )
+            }
+        }
+    }
 }

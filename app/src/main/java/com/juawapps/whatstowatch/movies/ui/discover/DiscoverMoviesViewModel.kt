@@ -61,7 +61,7 @@ class DiscoverMoviesViewModel @Inject constructor(
             copy(
                 isLoading = false,
                 isRefreshing = false,
-                movies = list.map { it.mapToUi() }
+                movies = list.map(MovieListUiItem.Factory::create)
             )
         }
     }
