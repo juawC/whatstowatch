@@ -8,6 +8,9 @@ import com.juawapps.whatstowatch.common.ui.DefaultViewStateStore
 import com.juawapps.whatstowatch.common.ui.ViewStateStore
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 import com.juawapps.whatstowatch.movies.domain.usecase.DiscoverMoviesUseCase
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +25,20 @@ class DiscoverMoviesViewModel @Inject constructor(
     ViewStateStore<DiscoverMoviesViewState, DiscoverMoviesViewEffect> by viewStateStore,
     DiscoverMoviesViewActions {
 
+    private val fetchMoviesListChannel = Channel<Unit>(Channel.CONFLATED)
+
     init {
-        fetchMovies()
+        viewModelScope.launch {
+            fetchMoviesListChannel.consumeAsFlow().flatMapLatest {
+                viewStateStore.displayLoading()
+                discoverMoviesUseCase.invoke()
+            }.collectResult(
+                ifFailure = { viewStateStore.displayError(it) },
+                ifSuccess = { viewStateStore.displayMovies(it) }
+            )
+        }
+
+        viewModelScope.launch { fetchMoviesListChannel.send(Unit) }
     }
 
     override fun tapOnMovie(movieId: Long) {
@@ -31,18 +46,7 @@ class DiscoverMoviesViewModel @Inject constructor(
     }
 
     override fun refresh() {
-        fetchMovies()
-    }
-
-    private fun fetchMovies() {
-        viewModelScope.launch {
-            viewStateStore.displayLoading()
-
-            discoverMoviesUseCase.invoke().collectResult(
-                ifFailure = { viewStateStore.displayError(it) },
-                ifSuccess = { viewStateStore.displayMovies(it) }
-            )
-        }
+        viewModelScope.launch { fetchMoviesListChannel.send(Unit) }
     }
 
     private fun DiscoverMoviesStateStore.displayError(error: Throwable) {
