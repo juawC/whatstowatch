@@ -12,7 +12,7 @@ import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.toList
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,18 +38,18 @@ class DiscoverMoviesUseCaseTest {
     }
 
     @Test
-    fun `invoke() when repository returns a successful response it gets a successful response`()
-            = testCoroutineRule.runBlockingTest {
+    fun `invoke() when repository returns a successful response it gets a successful response`() =
+        testCoroutineRule.runBlockingTest {
 
-        every {
-            moviesRepository.discoverMovies()
-        } returns aMovieItemsList.asSuccess().asList().asFlow()
+            every {
+                moviesRepository.discoverMovies()
+            } returns aMovieItemsList.asSuccess().asList().asFlow()
 
-        val resultFlow = discoverMoviesUseCase.invoke()
+            val resultFlow = discoverMoviesUseCase.invoke()
 
-        assertEquals(
-            aMovieItemsList.asSuccess().asList(),
-            resultFlow.toList()
-        )
-    }
+            assertEquals(
+                aMovieItemsList.asSuccess().asList(),
+                resultFlow.toList()
+            )
+        }
 }

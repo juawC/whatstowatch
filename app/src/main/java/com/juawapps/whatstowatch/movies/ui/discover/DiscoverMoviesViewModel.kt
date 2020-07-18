@@ -46,12 +46,17 @@ class DiscoverMoviesViewModel @Inject constructor(
     }
 
     private fun DiscoverMoviesStateStore.displayError(error: Throwable) {
+        val shouldErrorSateBePermanent = currentState.movies.isEmpty()
+
         updateState {
             copy(
                 isLoading = false,
-                errorMessage = R.string.error_message
+                isRefreshing = false,
+                errorMessage = if (shouldErrorSateBePermanent) R.string.error_message else null
             )
         }
+
+        if (!shouldErrorSateBePermanent) sendEffect(DiscoverMoviesViewEffect.ShowErrorMessage)
     }
 
     private fun DiscoverMoviesStateStore.displayMovies(
@@ -61,16 +66,19 @@ class DiscoverMoviesViewModel @Inject constructor(
             copy(
                 isLoading = false,
                 isRefreshing = false,
-                movies = list.map(MovieListUiItem.Factory::create)
+                movies = list.map(MovieListUiItem.Factory::create),
+                errorMessage = null
             )
         }
     }
 
     private fun DiscoverMoviesStateStore.displayLoading() {
         updateState {
+            val isRefresh = movies.isNotEmpty()
+
             copy(
-                isLoading = movies.isEmpty(),
-                isRefreshing = movies.isNotEmpty()
+                isLoading = !isRefresh,
+                isRefreshing = isRefresh
             )
         }
     }

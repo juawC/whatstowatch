@@ -39,18 +39,18 @@ class GetMovieDetailsCaseTest {
     }
 
     @Test
-    fun `invoke() when repository returns a successful response it gets a successful response`()
-            = testCoroutineRule.runBlockingTest {
+    fun `invoke() when repository returns a successful response it gets a successful response`() =
+        testCoroutineRule.runBlockingTest {
 
-        every {
-            moviesRepository.getMovieDetails(anId)
-        } returns aMovieDetails.asSuccess().asList().asFlow()
+            every {
+                moviesRepository.getMovieDetails(anId)
+            } returns aMovieDetails.asSuccess().asList().asFlow()
 
-        val resultFlow = getMovieDetailsCase.invoke(anId)
+            val resultFlow = getMovieDetailsCase.invoke(anId)
 
-        assertEquals(
-            aMovieDetails.asSuccess().asList(),
-            resultFlow.toList()
-        )
-    }
+            assertEquals(
+                aMovieDetails.asSuccess().asList(),
+                resultFlow.toList()
+            )
+        }
 }
