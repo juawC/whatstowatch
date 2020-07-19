@@ -5,12 +5,11 @@ import com.squareup.moshi.JsonClass
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class MovieListItemDTO(
+data class MovieDetailDTO(
     @Json(name = "poster_path") val posterPath: String?,
     @Json(name = "adult") val adult: Boolean,
     @Json(name = "overview") val overview: String,
     @Json(name = "release_date") val releaseDate: Date,
-    @Json(name = "genre_ids") val genreIds: List<Int>, //genres
     @Json(name = "id") val id: Long,
     @Json(name = "original_title") val originalTitle: String,
     @Json(name = "original_language") val originalLanguage: String,

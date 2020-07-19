@@ -4,6 +4,7 @@ import com.juawapps.whatstowatch.common.data.Mapper
 import com.juawapps.whatstowatch.movies.data.api.MoviesApi
 import com.juawapps.whatstowatch.movies.data.mapper.MovieDetailMapper
 import com.juawapps.whatstowatch.movies.data.mapper.MovieListItemMapper
+import com.juawapps.whatstowatch.movies.data.model.MovieDetailDTO
 import com.juawapps.whatstowatch.movies.data.model.MovieListItemDTO
 import com.juawapps.whatstowatch.movies.data.repository.MoviesRepositoryImpl
 import com.juawapps.whatstowatch.movies.domain.model.MovieDetails
@@ -27,7 +28,7 @@ abstract class MoviesDataModule {
     internal abstract fun movieListMapper(mapper: MovieListItemMapper): Mapper<MovieListItemDTO, MovieListItem>
 
     @Binds
-    internal abstract fun movieDetailsMapper(mapper: MovieDetailMapper): Mapper<MovieListItemDTO, MovieDetails>
+    internal abstract fun movieDetailsMapper(mapper: MovieDetailMapper): Mapper<MovieDetailDTO, MovieDetails>
 
     companion object {
         @Provides

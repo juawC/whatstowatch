@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.juawapps.whatstowatch.movies.ui.detail.MovieDetailsViewModel" />
+
+        <variable
+            name="viewActions"
+            type="com.juawapps.whatstowatch.common.ui.LceViewActions" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:onRefreshListener="@{() -> viewActions.refresh()}"
+            app:refreshing="@{viewModel.viewState.isRefreshing}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    android:contentDescription="@string/poster"
+                    android:scaleType="fitCenter"
+                    app:imageUrl="@{viewModel.viewState.movie.posterImage}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@color/black"
+                    tools:layout_width="92dp" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{viewModel.viewState.movie.title}"
+                    android:textAppearance="@style/MoviesTextAppearance.Headline5"
+                    app:layout_constraintEnd_toStartOf="@+id/voteAverage"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Movie title" />
+
+                <TextView
+                    android:id="@+id/year"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{@string/year(viewModel.viewState.movie.year)}"
+                    android:textAppearance="@style/MoviesTextAppearance.Overline"
+                    app:layout_constraintBottom_toTopOf="@id/language"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    tools:text="Year: 2020" />
+
+                <TextView
+                    android:id="@+id/language"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@{@string/language(viewModel.viewState.movie.language)}"
+                    android:textAppearance="@style/MoviesTextAppearance.Overline"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    tools:text="Language: English" />
+
+                <TextView
+                    android:id="@+id/voteAverage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_rectangle"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:text="@{viewModel.viewState.movie.voteAverage}"
+                    android:textAppearance="@style/MoviesTextAppearance.Headline5"
+                    app:backgroundTintColorAttr="@{viewModel.viewState.movie.voteColorAttr}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:textColorAttr="@{viewModel.viewState.movie.voteColorAttr}"
+                    tools:text="9.0"
+                    tools:textColor="?attr/positiveColor"
+                    tools:backgroundTint="?attr/positiveColor"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            layout="@layout/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            bind:viewActions="@{viewActions}"
+            bind:viewState="@{viewModel.viewState}"
+            tools:visibility="gone" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

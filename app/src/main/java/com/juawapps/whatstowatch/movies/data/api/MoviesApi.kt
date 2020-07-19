@@ -2,6 +2,7 @@ package com.juawapps.whatstowatch.movies.data.api
 
 import com.juawapps.whatstowatch.movies.data.model.MovieListItemDTO
 import com.juawapps.whatstowatch.movies.data.model.ListResponseWrapper
+import com.juawapps.whatstowatch.movies.data.model.MovieDetailDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,5 +20,5 @@ interface MoviesApi {
         @Path("movie_id") id: Long,
         @Query("language") language: String = "en-UK",
         @Query("page") page: Int = 1
-    ): Response<MovieListItemDTO>
+    ): Response<MovieDetailDTO>
 }

@@ -1,9 +1,9 @@
 package com.juawapps.whatstowatch.movies.ui.discover
 
-import com.juawapps.whatstowatch.R
 import com.juawapps.whatstowatch.common.domain.ImageUrl
 import com.juawapps.whatstowatch.common.ui.calendarYear
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
+import com.juawapps.whatstowatch.movies.ui.shared.MovieUiItemFormatter
 
 data class MovieListUiItem(
     val posterImage: ImageUrl,
@@ -24,8 +24,8 @@ data class MovieListUiItem(
                     id,
                     originalLanguage,
                     title,
-                    String.format("%.1f", voteAverage),
-                    if (voteAverage >= 7.0) R.attr.positiveColor else R.attr.mehColor
+                    MovieUiItemFormatter.formatVoteAverage(voteAverage),
+                    MovieUiItemFormatter.getVoteColorAttr(voteAverage)
                 )
             }
         }

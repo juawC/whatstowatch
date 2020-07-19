@@ -6,7 +6,7 @@ import com.juawapps.whatstowatch.movies.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetMovieDetailsCase @Inject constructor(
+class GetMovieDetailsUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) {
     operator fun invoke(id: Long): Flow<Result<MovieDetails>> {

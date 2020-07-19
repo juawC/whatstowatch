@@ -27,7 +27,7 @@ class GetMovieDetailsCaseTest {
 
     val fixture = kotlinFixture()
 
-    private lateinit var getMovieDetailsCase: GetMovieDetailsCase
+    private lateinit var getMovieDetailsCase: GetMovieDetailsUseCase
 
     private val aMovieDetails = fixture<MovieDetails>()
     private val anId = 0L
@@ -35,7 +35,7 @@ class GetMovieDetailsCaseTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        getMovieDetailsCase = GetMovieDetailsCase(moviesRepository)
+        getMovieDetailsCase = GetMovieDetailsUseCase(moviesRepository)
     }
 
     @Test

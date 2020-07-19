@@ -8,6 +8,18 @@
     <fragment
         android:id="@+id/discoverMoviesFragment"
         android:name="com.juawapps.whatstowatch.movies.ui.discover.DiscoverMoviesFragment"
-        android:label="DiscoverMoviesFragment" />
+        android:label="DiscoverMoviesFragment" >
+        <action
+            android:id="@+id/action_discoverMoviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.juawapps.whatstowatch.movies.ui.detail.MovieDetailsFragment"
+        android:label="MovieDetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

@@ -2,6 +2,7 @@ package com.juawapps.whatstowatch
 
 import androidx.fragment.app.Fragment
 import com.juawapps.whatstowatch.di.annotation.FragmentKey
+import com.juawapps.whatstowatch.movies.ui.detail.MovieDetailsFragment
 import com.juawapps.whatstowatch.movies.ui.discover.DiscoverMoviesFragment
 import dagger.Binds
 import dagger.Module
@@ -16,5 +17,10 @@ abstract class MainActivityModule {
     @Binds
     @IntoMap
     @FragmentKey(DiscoverMoviesFragment::class)
-    abstract fun bindSearchFragment(fragment: DiscoverMoviesFragment): Fragment
+    abstract fun bindDiscoverFragment(fragment: DiscoverMoviesFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(MovieDetailsFragment::class)
+    abstract fun bindDetailFragment(fragment: MovieDetailsFragment): Fragment
 }

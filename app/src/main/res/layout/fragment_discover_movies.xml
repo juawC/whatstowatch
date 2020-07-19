@@ -26,6 +26,7 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
                 app:title="@string/discover"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
@@ -34,7 +35,6 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:enabled="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:onRefreshListener="@{() -> viewActions.refresh()}"
             app:refreshing="@{viewModel.viewState.isRefreshing}">
