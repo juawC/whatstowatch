@@ -5,7 +5,7 @@ import com.juawapps.whatstowatch.common.data.ImageUrlFactory
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 
 class MovieListItemFixture {
-    operator fun invoke(update: MovieListItem.() -> Unit = {}): MovieListItem {
+    operator fun invoke(update: MovieListItem.() -> MovieListItem = { this }): MovieListItem {
         return MovieListItem(
             posterImage = ImageUrlFactory().createFromNull(),
             releaseDate = ApiDateFormatter().parseDate("2020-01-10"),
@@ -15,6 +15,6 @@ class MovieListItemFixture {
             originalLanguage = "English",
             title = "Title",
             voteAverage = 10.0f
-        ).apply(update)
+        ).run(update)
     }
 }

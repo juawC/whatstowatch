@@ -13,7 +13,6 @@ import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 
-
 @HiltAndroidTest
 @UninstallModules(ApiConfigsModule::class)
 class MoviesFeatureTest {
@@ -32,7 +31,7 @@ class MoviesFeatureTest {
     }
 
     @Test
-    fun auctionsListViewDisplayed() {
+    fun itDisplaysMoviesList() {
         launchActivity()
 
         onScreen<DiscoverMoviesScreen> {

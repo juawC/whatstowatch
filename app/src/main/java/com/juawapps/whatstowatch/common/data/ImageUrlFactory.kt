@@ -3,10 +3,14 @@ package com.juawapps.whatstowatch.common.data
 import com.juawapps.whatstowatch.common.domain.ImageUrl
 import javax.inject.Inject
 
-class ImageUrlFactory @Inject constructor(){
+class ImageUrlFactory @Inject constructor() {
 
     companion object {
         private const val DEFAULT_URL = "https://image.tmdb.org/t/p/"
+
+        private val emptyImageUrl: ImageUrl = object : ImageUrl {
+            override fun getUrl(targetWidth: Int) = ""
+        }
     }
 
     fun createFromPoster(
@@ -25,7 +29,7 @@ class ImageUrlFactory @Inject constructor(){
         arrayListOf(300, 780, 1280)
     )
 
-    fun createFromNull() = DefaultImageUrl("", "", emptyList())
+    fun createFromNull() = emptyImageUrl
 
     fun wrapNullToEmpty(imageUrl: String?, creator: (String) -> ImageUrl): ImageUrl {
         return if (imageUrl != null) creator(imageUrl) else createFromNull()

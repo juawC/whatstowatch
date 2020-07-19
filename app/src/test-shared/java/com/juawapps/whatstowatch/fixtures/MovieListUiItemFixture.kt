@@ -5,7 +5,7 @@ import com.juawapps.whatstowatch.common.data.ImageUrlFactory
 import com.juawapps.whatstowatch.movies.ui.discover.MovieListUiItem
 
 class MovieListUiItemFixture {
-    operator fun invoke(update: MovieListUiItem.() -> Unit = {}): MovieListUiItem {
+    operator fun invoke(update: MovieListUiItem.() -> MovieListUiItem = { this }): MovieListUiItem {
         return MovieListUiItem(
             posterImage = ImageUrlFactory().createFromNull(),
             year = "2020",
@@ -14,6 +14,6 @@ class MovieListUiItemFixture {
             title = "Title",
             voteAverage = "10.0",
             voteColorAttr = R.attr.positiveColor
-        ).apply(update)
+        ).run(update)
     }
 }
