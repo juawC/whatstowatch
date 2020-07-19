@@ -93,7 +93,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:textColorAttr="@{item.voteColorAttr}"
             tools:text="9.0"
-            tools:textColor="?attr/positiveColor" />
+            tools:textColor="?attr/positiveColor"
+            tools:backgroundTint="?attr/positiveColor"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

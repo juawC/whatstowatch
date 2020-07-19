@@ -70,7 +70,7 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = TestOptions.IS_RETURN_DEFAULT_VALUES
-        execution = TestOptions.ANDROIDX_TEST_ORCHESTRATOR
+        //execution = TestOptions.ANDROIDX_TEST_ORCHESTRATOR
     }
 }
 androidExtensions { isExperimental = true }
@@ -120,8 +120,11 @@ dependencies {
     androidTestImplementation(TestLibraryDependency.TEST_CORE)
     androidTestImplementation(TestLibraryDependency.TEST_ARCH)
     androidTestImplementation(TestLibraryDependency.JUNIT_4_13)
+    androidTestImplementation(TestLibraryDependency.MOCK_SERVER)
+    androidTestImplementation(TestLibraryDependency.KAKAO)
+    androidTestImplementation(TestLibraryDependency.COROUTINES_TEST)
     kaptAndroidTest(TestLibraryDependency.HILT_TESTING_COMPILER)
 
-    androidTestUtil(TestLibraryDependency.TEST_ORCHESTRATOR)
+    //androidTestUtil(TestLibraryDependency.TEST_ORCHESTRATOR)
     debugImplementation(TestLibraryDependency.FRAGMENT_TESTING)
 }

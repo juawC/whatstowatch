@@ -7,7 +7,7 @@ object AndroidConfig {
     const val VERSION_NAME = "1.0"
 
     const val ID = "com.juawapps.whatstowatch"
-    const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
+    const val TEST_INSTRUMENTATION_RUNNER = "com.juawapps.whatstowatch.CustomTestRunner"
 }
 
 interface BuildType {

@@ -13,6 +13,7 @@ object TestLibraryDependency {
         const val COROUTINES_ANDROID = "1.3.2"
         const val FRAGMENT = "1.2.5"
         const val FIXTURE = "0.9.4"
+        const val KAKAO = "2.3.3"
     }
 
     // Base framework
@@ -30,12 +31,14 @@ object TestLibraryDependency {
     const val MOCKK = "io.mockk:mockk:${Version.MOCKK}"
     const val MOCKK_ANDROID = "io.mockk:mockk-android:${Version.MOCKK}"
     const val FIXTURES = "com.appmattus.fixture:fixture:${Version.FIXTURE}"
+    const val MOCK_SERVER = "com.squareup.okhttp3:mockwebserver:${CommonVersion.OKHTTP}"
 
     // Espresso / UI
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core:${Version.ESPRESSO_CORE}"
     const val FRAGMENT_TESTING = "androidx.fragment:fragment-testing:${Version.FRAGMENT}"
     const val HILT_TESTING = "com.google.dagger:hilt-android-testing:${CommonVersion.HILT}"
     const val HILT_TESTING_COMPILER = "com.google.dagger:hilt-android-compiler:${CommonVersion.HILT}"
+    const val KAKAO = "com.agoda.kakao:kakao:${Version.KAKAO}"
 
     // Coroutines
     const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.COROUTINES_ANDROID}"

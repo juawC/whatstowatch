@@ -1,7 +1,6 @@
 object LibraryDependency {
     private object Version {
         const val RETROFIT = "2.6.2"
-        const val LOGGING_INTERCEPTOR = "4.2.0"
         const val RECYCLER_VIEW = "1.0.0"
         const val COORDINATOR_LAYOUT = "1.0.0"
         const val MATERIAL = "1.2.0-alpha05"
@@ -36,7 +35,7 @@ object LibraryDependency {
     const val MOSHI = "com.squareup.moshi:moshi-kotlin:${Version.MOSHI}"
     const val MOSHI_CODE_GEM = "com.squareup.moshi:moshi-kotlin-codegen:${Version.MOSHI}"
     const val RETROFIT_MOSHI_CONVERTER = "com.squareup.retrofit2:converter-moshi:${Version.RETROFIT}"
-    const val LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.LOGGING_INTERCEPTOR}"
+    const val LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${CommonVersion.OKHTTP}"
 
     // UI
     const val COIL = "io.coil-kt:coil:${Version.COIL}"

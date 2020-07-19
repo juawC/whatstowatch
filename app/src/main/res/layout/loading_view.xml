@@ -39,7 +39,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            app:SpinKit_Color="?attr/colorPrimaryVariant"
+            app:SpinKit_Color="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@+id/guidelineStart"
