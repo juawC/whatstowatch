@@ -5,7 +5,13 @@
     <style name="MoviesTextAppearance.Headline5" parent="@style/TextAppearance.MaterialComponents.Headline5">
     </style>
 
+    <style name="MoviesTextAppearance.Headline6" parent="@style/TextAppearance.MaterialComponents.Headline6">
+    </style>
+
     <style name="MoviesTextAppearance.Body1" parent="@style/TextAppearance.MaterialComponents.Body1">
+    </style>
+
+    <style name="MoviesTextAppearance.Body2" parent="@style/TextAppearance.MaterialComponents.Body2">
     </style>
 
     <style name="MoviesTextAppearance.Overline" parent="@style/TextAppearance.MaterialComponents.Overline">

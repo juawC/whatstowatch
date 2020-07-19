@@ -47,32 +47,59 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp">
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideLine_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideLine_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideLine_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideLine_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_end="16dp" />
+
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="wrap_content"
-                    android:layout_height="120dp"
+                    android:layout_height="180dp"
                     android:contentDescription="@string/poster"
                     android:scaleType="fitCenter"
                     app:imageUrl="@{viewModel.viewState.movie.posterImage}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guideLine_start"
+                    app:layout_constraintTop_toTopOf="@id/guideLine_top"
                     tools:background="@color/black"
-                    tools:layout_width="92dp" />
+                    tools:layout_width="130dp" />
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@{viewModel.viewState.movie.title}"
                     android:textAppearance="@style/MoviesTextAppearance.Headline5"
-                    app:layout_constraintEnd_toStartOf="@+id/voteAverage"
+                    app:layout_constraintEnd_toStartOf="@id/guideLine_end"
                     app:layout_constraintStart_toEndOf="@+id/image"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/year"
                     tools:text="Movie title" />
 
                 <TextView
@@ -85,7 +112,7 @@
                     android:text="@{@string/year(viewModel.viewState.movie.year)}"
                     android:textAppearance="@style/MoviesTextAppearance.Overline"
                     app:layout_constraintBottom_toTopOf="@id/language"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideLine_end"
                     app:layout_constraintStart_toEndOf="@+id/image"
                     tools:text="Year: 2020" />
 
@@ -94,10 +121,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@{@string/language(viewModel.viewState.movie.language)}"
                     android:textAppearance="@style/MoviesTextAppearance.Overline"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/voteAverage"
+                    app:layout_constraintEnd_toEndOf="@id/guideLine_end"
                     app:layout_constraintStart_toEndOf="@+id/image"
                     tools:text="Language: English" />
 
@@ -106,19 +134,52 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_rectangle"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
                     android:text="@{viewModel.viewState.movie.voteAverage}"
-                    android:textAppearance="@style/MoviesTextAppearance.Headline5"
-                    app:backgroundTintColorAttr="@{viewModel.viewState.movie.voteColorAttr}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textAppearance="@style/MoviesTextAppearance.Body1"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    app:layout_constraintBottom_toBottomOf="@+id/image"
                     app:textColorAttr="@{viewModel.viewState.movie.voteColorAttr}"
                     tools:text="9.0"
                     tools:textColor="?attr/positiveColor"
                     tools:backgroundTint="?attr/positiveColor"/>
+
+                <TextView
+                    android:id="@+id/votes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{@string/from_votes(viewModel.viewState.movie.voteCount)}"
+                    android:textAppearance="@style/MoviesTextAppearance.Overline"
+                    app:layout_constraintEnd_toEndOf="@id/guideLine_end"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/voteAverage"
+                    app:layout_constraintStart_toEndOf="@+id/voteAverage"
+                    tools:text="From: 2 votes" />
+
+                <TextView
+                    android:id="@+id/overview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="@string/overview"
+                    android:layout_marginTop="24dp"
+                    android:textAppearance="@style/MoviesTextAppearance.Headline6"
+                    app:layout_constraintEnd_toEndOf="@id/guideLine_end"
+                    app:layout_constraintStart_toStartOf="@id/guideLine_start"
+                    app:layout_constraintTop_toBottomOf="@id/voteAverage" />
+
+                <TextView
+                    android:id="@+id/overviewText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="@{viewModel.viewState.movie.overview}"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/MoviesTextAppearance.Body2"
+                    app:layout_constraintEnd_toEndOf="@id/guideLine_end"
+                    app:layout_constraintStart_toStartOf="@id/guideLine_start"
+                    app:layout_constraintBottom_toBottomOf="@id/guideLine_bottom"
+                    app:layout_constraintTop_toBottomOf="@id/overview" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

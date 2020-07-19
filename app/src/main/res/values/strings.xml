@@ -6,4 +6,6 @@
     <string name="poster">poster</string>
     <string name="year">Year: %s</string>
     <string name="language">Language: %s</string>
+    <string name="from_votes"> %s votes</string>
+    <string name="overview">Overview</string>
 </resources>

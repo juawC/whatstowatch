@@ -15,8 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.juawapps.whatstowatch.movies.ui.detail.MovieDetailsFragment"
-        android:label="MovieDetailsFragment" >
+        android:name="com.juawapps.whatstowatch.movies.ui.detail.MovieDetailsFragment">
         <argument
             android:name="id"
             app:argType="long" />
