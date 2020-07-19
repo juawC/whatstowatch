@@ -46,7 +46,6 @@ fun textColorAttr(textView: TextView, colorAttr: Int?) {
 @BindingAdapter("backgroundTintColorAttr")
 fun backgroundTintColorAttr(textView: TextView, colorAttr: Int?) {
     if (colorAttr == null) return
-    val background = textView.background as GradientDrawable
     textView.backgroundTintMode = PorterDuff.Mode.SRC_IN
     textView.backgroundTintList = ColorStateList.valueOf(textView.context.getColorByAttr(colorAttr))
 }
