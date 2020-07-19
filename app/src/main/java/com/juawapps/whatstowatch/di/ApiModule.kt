@@ -2,6 +2,7 @@ package com.juawapps.whatstowatch.di
 
 import com.juawapps.whatstowatch.common.data.ApiKeyInterceptor
 import com.juawapps.whatstowatch.common.data.MoshiCustomDateAdapter
+import com.juawapps.whatstowatch.di.annotation.ApiConfig
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

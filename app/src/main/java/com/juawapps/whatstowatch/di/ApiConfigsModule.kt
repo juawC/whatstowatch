@@ -1,5 +1,6 @@
 package com.juawapps.whatstowatch.di
 
+import com.juawapps.whatstowatch.di.annotation.ApiConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +13,6 @@ class ApiConfigsModule {
     @Provides
     @ApiConfig
     fun providesApiUrl(): String {
-        return "https://api.themoviedb.org/3"
+        return "https://api.themoviedb.org/3/"
     }
 }

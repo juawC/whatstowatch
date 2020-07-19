@@ -8,15 +8,16 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesApi {
-    @GET("3/discover/movie")
+    @GET("discover/movie")
     suspend fun discoverMovies(
         @Query("language") language: String = "en-UK"
     ): Response<ListResponseWrapper<MovieListItemDTO>>
 
 
-    @GET("3/movie/{movie_id}")
+    @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
         @Path("movie_id") id: Long,
-        @Query("language") language: String = "en-UK"
+        @Query("language") language: String = "en-UK",
+        @Query("page") page: Int = 1
     ): Response<MovieListItemDTO>
 }

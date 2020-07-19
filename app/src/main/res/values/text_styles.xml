@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MoviesTextAppearance" />
+
+    <style name="MoviesTextAppearance.Headline5" parent="@style/TextAppearance.MaterialComponents.Headline5">
+    </style>
+
+    <style name="MoviesTextAppearance.Body1" parent="@style/TextAppearance.MaterialComponents.Body1">
+    </style>
+
+    <style name="MoviesTextAppearance.Overline" parent="@style/TextAppearance.MaterialComponents.Overline">
+    </style>
+
+    <style name="MoviesTextAppearance.Headline1" parent="@style/TextAppearance.MaterialComponents.Headline4">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+</resources>

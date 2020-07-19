@@ -25,7 +25,7 @@ data class MovieListUiItem(
                     originalLanguage,
                     title,
                     String.format("%.1f", voteAverage),
-                    if (voteAverage >= 0.7) R.attr.positiveColor else R.attr.mehColor
+                    if (voteAverage >= 7.0) R.attr.positiveColor else R.attr.mehColor
                 )
             }
         }

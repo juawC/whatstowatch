@@ -1,4 +1,4 @@
-package com.juawapps.whatstowatch.di
+package com.juawapps.whatstowatch.di.annotation
 
 import javax.inject.Qualifier
 

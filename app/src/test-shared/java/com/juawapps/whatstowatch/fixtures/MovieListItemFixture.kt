@@ -8,7 +8,7 @@ class MovieListItemFixture {
     operator fun invoke(update: MovieListItem.() -> Unit = {}): MovieListItem {
         return MovieListItem(
             posterImage = ImageUrlFactory().createFromNull(),
-            releaseDate = ApiDateFormatter().parseDate("10-01-2020"),
+            releaseDate = ApiDateFormatter().parseDate("2020-01-10"),
             genreIds = emptyList(),
             id = 1,
             originalTitle = "Title",

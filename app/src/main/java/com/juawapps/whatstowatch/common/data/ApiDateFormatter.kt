@@ -5,7 +5,7 @@ import java.util.*
 
 class ApiDateFormatter {
     companion object {
-        private const val DATE_FORMAT_STRING = "dd-MM-yyyy"
+        private const val DATE_FORMAT_STRING = "yyyy-MM-dd"
     }
 
     private val dateFormat = SimpleDateFormat(DATE_FORMAT_STRING, Locale.UK)

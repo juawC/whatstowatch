@@ -2,4 +2,8 @@
     <string name="app_name">WhatsToWatch</string>
     <string name="error_message">Oops something went wrong!</string>
     <string name="try_again">Try again</string>
+    <string name="discover">Discover</string>
+    <string name="poster">poster</string>
+    <string name="year">Year: %s</string>
+    <string name="language">Language: %s</string>
 </resources>

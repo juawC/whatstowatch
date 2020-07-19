@@ -9,3 +9,12 @@ inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
 ): VM {
     return ViewModelProvider(this, factory).get(VM::class.java)
 }
+
+fun <VS: ViewState, VF: ViewEffect> Fragment.observeEffects(
+    viewStateStore: ViewStateStore<VS, VF>,
+    body: VF.() -> Unit
+) {
+    viewLifecycleOwner.observeEvent(viewStateStore.viewEffect) { effect ->
+        effect.apply(body)
+    }
+}
