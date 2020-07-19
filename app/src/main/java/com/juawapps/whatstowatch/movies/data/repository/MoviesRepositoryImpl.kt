@@ -37,12 +37,9 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMovieDetails(id: Long): Flow<Result<MovieDetails>> = flow {
-        val result = try {
-            moviesApi.getMovieDetails(id).toResult(moviesDetailsMapper::map)
-        } catch (exception: Exception) {
-            Result.Error(exception)
-        }
-        emit(result)
+    override suspend fun getMovieDetails(id: Long): Result<MovieDetails> = try {
+        moviesApi.getMovieDetails(id).toResult(moviesDetailsMapper::map)
+    } catch (exception: Exception) {
+        Result.Error(exception)
     }
 }

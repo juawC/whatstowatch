@@ -3,16 +3,12 @@ package com.juawapps.whatstowatch.movies.ui.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.juawapps.whatstowatch.R
-import com.juawapps.whatstowatch.common.data.collectResult
 import com.juawapps.whatstowatch.common.ui.DefaultViewStateStore
 import com.juawapps.whatstowatch.common.ui.LceViewActions
 import com.juawapps.whatstowatch.common.ui.ViewStateStore
 import com.juawapps.whatstowatch.di.ViewModelFactoryCreator
 import com.juawapps.whatstowatch.movies.domain.model.MovieDetails
 import com.juawapps.whatstowatch.movies.domain.usecase.GetMovieDetailsUseCase
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,24 +26,22 @@ open class MovieDetailsViewModel(
     ViewStateStore<MoviesDetailsViewState, MovieDetailsViewEffect> by viewStateStore,
     LceViewActions {
 
-    private val fetchMovieChannel = Channel<Unit>(Channel.CONFLATED)
-
     init {
+        loadDetails()
+    }
+
+    override fun refresh() {
+        loadDetails()
+    }
+
+    private fun loadDetails() {
         viewModelScope.launch {
-            fetchMovieChannel.consumeAsFlow().flatMapLatest {
-                viewStateStore.displayLoading()
-                getMovieDetailsUseCase.invoke(movieId)
-            }.collectResult(
+            viewStateStore.displayLoading()
+            getMovieDetailsUseCase.invoke(movieId).fold(
                 ifFailure = { viewStateStore.displayError(it) },
                 ifSuccess = { viewStateStore.displayMovies(it) }
             )
         }
-
-        viewModelScope.launch { fetchMovieChannel.send(Unit) }
-    }
-
-    override fun refresh() {
-        viewModelScope.launch { fetchMovieChannel.send(Unit) }
     }
 
     private fun MoviesDetailStateStore.displayError(error: Throwable) {

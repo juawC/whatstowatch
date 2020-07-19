@@ -10,5 +10,5 @@ interface MoviesRepository {
 
     fun discoverMovies(): Flow<Resource<List<MovieListItem>>>
 
-    fun getMovieDetails(id: Long): Flow<Result<MovieDetails>>
+    suspend fun getMovieDetails(id: Long): Result<MovieDetails>
 }

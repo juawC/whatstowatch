@@ -7,6 +7,7 @@ import com.juawapps.whatstowatch.util.TestCoroutineRule
 import com.juawapps.whatstowatch.util.asList
 import com.juawapps.whatstowatch.util.asSuccess
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,15 +43,15 @@ class GetMovieDetailsCaseTest {
     fun `invoke() when repository returns a successful response it gets a successful response`() =
         testCoroutineRule.runBlockingTest {
 
-            every {
+            coEvery {
                 moviesRepository.getMovieDetails(anId)
-            } returns aMovieDetails.asSuccess().asList().asFlow()
+            } returns aMovieDetails.asSuccess()
 
-            val resultFlow = getMovieDetailsCase.invoke(anId)
+            val result = getMovieDetailsCase.invoke(anId)
 
             assertEquals(
-                aMovieDetails.asSuccess().asList(),
-                resultFlow.toList()
+                aMovieDetails.asSuccess(),
+                result
             )
         }
 }
