@@ -1,6 +1,5 @@
 package com.juawapps.whatstowatch.common.data
 
-import com.juawapps.whatstowatch.common.data.Result
 import retrofit2.Response
 import java.io.IOException
 

@@ -14,6 +14,7 @@ object LibraryDependency {
         const val ARROW = "0.10.4"
         const val SPIN_KIT = "1.4.0"
         const val SWIPE_REFRESH_LAYOUT = "1.0.0"
+        const val ROOM = "2.2.5"
     }
 
     // Android
@@ -29,6 +30,9 @@ object LibraryDependency {
     const val NAVIGATION_UI_KTX = "androidx.navigation:navigation-ui-ktx:${CommonVersion.NAVIGATION}"
     const val SUPPORT_CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Version.CONSTRAINT_LAYOUT}"
     const val SWIPE_REFRESH_LAYOUT = "androidx.swiperefreshlayout:swiperefreshlayout:${Version.SWIPE_REFRESH_LAYOUT}"
+    const val ROOM = "androidx.room:room-runtime:${Version.ROOM}"
+    const val ROOM_COMPILER = "androidx.room:room-compiler:${Version.ROOM}"
+    const val ROOM_KTX = "androidx.room:room-ktx:${Version.ROOM}"
 
     // Network
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Version.RETROFIT}"

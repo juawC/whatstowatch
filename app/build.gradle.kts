@@ -97,6 +97,9 @@ dependencies {
     implementation(LibraryDependency.FRAGMENT_KTX)
     implementation(LibraryDependency.COIL)
     implementation(LibraryDependency.MOSHI)
+    implementation(LibraryDependency.ROOM)
+    implementation(LibraryDependency.ROOM_KTX)
+    kapt(LibraryDependency.ROOM_COMPILER)
 
     kapt(LibraryDependency.SWIPE_REFRESH_LAYOUT)
     kapt(LibraryDependency.HILT_ANDROID_COMPILER)
