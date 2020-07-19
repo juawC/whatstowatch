@@ -3,10 +3,9 @@ package com.juawapps.whatstowatch.common.ui
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import coil.api.load
-import com.juawapps.whatstowatch.R
+import coil.size.ViewSizeResolver
 import com.juawapps.whatstowatch.common.domain.ImageUrl
 
 
@@ -22,11 +21,18 @@ fun setVisible(view: View, isVisible: Boolean) {
 @BindingAdapter("imageUrl")
 fun bindImage(imageView: ImageView, url: ImageUrl?) {
     if (url == null || url.getUrl().isEmpty()) return
-    imageView.load(url.getUrl()) {
+
+    // We are getting the height because its the value that we defined on the view instead of
+    // the width, we are defining the height as constant and not the width because currently we are
+    // using this on a RecyclerView. In the future this should be fixed so it supports a measured
+    // width.
+    val width = imageView.layoutParams?.height ?: Int.MAX_VALUE
+
+    imageView.load(url.getUrl(width)) {
+        size(ViewSizeResolver(imageView))
         crossfade(true)
     }
 }
-
 
 @BindingAdapter("textColorAttr")
 fun textColorAttr(textView: TextView, colorAttr: Int?) {

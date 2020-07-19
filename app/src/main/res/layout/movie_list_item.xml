@@ -42,8 +42,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:maxLines="2"
             android:text="@{item.title}"
             android:textAppearance="@style/MoviesTextAppearance.Headline5"
             app:layout_constraintEnd_toStartOf="@+id/voteAverage"
@@ -85,9 +85,9 @@
             android:layout_marginTop="8dp"
             android:text="@{item.voteAverage}"
             android:textAppearance="@style/MoviesTextAppearance.Headline5"
-            app:textColorAttr="@{item.voteColorAttr}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:textColorAttr="@{item.voteColorAttr}"
             tools:text="9.0"
             tools:textColor="?attr/positiveColor" />
 
