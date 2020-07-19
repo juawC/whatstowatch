@@ -1,5 +1,8 @@
 package com.juawapps.whatstowatch.common.ui
 
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -38,5 +41,13 @@ fun bindImage(imageView: ImageView, url: ImageUrl?) {
 fun textColorAttr(textView: TextView, colorAttr: Int?) {
     if (colorAttr == null) return
     textView.setTextColor(textView.context.getColorByAttr(colorAttr))
+}
+
+@BindingAdapter("backgroundTintColorAttr")
+fun backgroundTintColorAttr(textView: TextView, colorAttr: Int?) {
+    if (colorAttr == null) return
+    val background = textView.background as GradientDrawable
+    textView.backgroundTintMode = PorterDuff.Mode.SRC_IN
+    textView.backgroundTintList = ColorStateList.valueOf(textView.context.getColorByAttr(colorAttr))
 }
 

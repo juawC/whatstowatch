@@ -11,7 +11,7 @@
     <style name="MoviesTextAppearance.Overline" parent="@style/TextAppearance.MaterialComponents.Overline">
     </style>
 
-    <style name="MoviesTextAppearance.Headline1" parent="@style/TextAppearance.MaterialComponents.Headline4">
+    <style name="MoviesTextAppearance.Headline4" parent="@style/TextAppearance.MaterialComponents.Headline4">
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources>
