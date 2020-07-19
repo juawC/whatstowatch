@@ -5,6 +5,7 @@ import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 import com.juawapps.whatstowatch.movies.domain.repository.MoviesRepository
 import com.juawapps.whatstowatch.util.TestCoroutineRule
 import com.juawapps.whatstowatch.util.asList
+import com.juawapps.whatstowatch.util.asResourceSuccess
 import com.juawapps.whatstowatch.util.asSuccess
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -43,12 +44,12 @@ class DiscoverMoviesUseCaseTest {
 
             every {
                 moviesRepository.discoverMovies()
-            } returns aMovieItemsList.asSuccess().asList().asFlow()
+            } returns aMovieItemsList.asResourceSuccess().asList().asFlow()
 
             val resultFlow = discoverMoviesUseCase.invoke()
 
             assertEquals(
-                aMovieItemsList.asSuccess().asList(),
+                aMovieItemsList.asResourceSuccess().asList(),
                 resultFlow.toList()
             )
         }

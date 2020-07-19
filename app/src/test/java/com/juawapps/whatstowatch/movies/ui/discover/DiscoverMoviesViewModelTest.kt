@@ -45,6 +45,7 @@ class DiscoverMoviesViewModelTest {
     val fixture = kotlinFixture()
 
     private val aMovieItemsList = fixture<List<MovieListItem>>()
+    private val aMovieEmptyList = emptyList<MovieListItem>()
     private val aSecondMovieItemsList = fixture<List<MovieListItem>>()
     private val anError: Exception = Exception()
     private val baseViewState = DiscoverMoviesViewState()
@@ -76,7 +77,10 @@ class DiscoverMoviesViewModelTest {
 
             every {
                 discoverMoviesUseCase.invoke()
-            } returns aMovieItemsList.asSuccess().asList().asFlow()
+            } returns listOf(
+                aMovieEmptyList.asResourceLoading(),
+                aMovieItemsList.asResourceSuccess()
+            ).asFlow()
 
             intViewModel()
 
@@ -98,7 +102,10 @@ class DiscoverMoviesViewModelTest {
 
             every {
                 discoverMoviesUseCase.invoke()
-            } returns anError.asError<List<MovieListItem>, Exception>().asList().asFlow()
+            } returns listOf(
+                aMovieEmptyList.asResourceLoading(),
+                anError.asResourceError(aMovieEmptyList)
+            ).asFlow()
 
             intViewModel()
 
@@ -120,7 +127,10 @@ class DiscoverMoviesViewModelTest {
 
             every {
                 discoverMoviesUseCase.invoke()
-            } returns aSecondMovieItemsList.asSuccess().asList().asFlow()
+            } returns listOf(
+                aMovieItemsList.asResourceLoading(),
+                aSecondMovieItemsList.asResourceSuccess()
+            ).asFlow()
 
             val viewStateWithMovieList = baseViewState.copy(
                 movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
@@ -147,7 +157,10 @@ class DiscoverMoviesViewModelTest {
 
             every {
                 discoverMoviesUseCase.invoke()
-            } returns anError.asError<List<MovieListItem>, Exception>().asList().asFlow()
+            } returns listOf(
+                aMovieItemsList.asResourceLoading(),
+                anError.asResourceError(aMovieItemsList)
+            ).asFlow()
 
             val viewStateWithMovieList = baseViewState.copy(
                 movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
@@ -170,7 +183,10 @@ class DiscoverMoviesViewModelTest {
 
             every {
                 discoverMoviesUseCase.invoke()
-            } returns aMovieItemsList.asSuccess().asList().asFlow()
+            } returns listOf(
+                aMovieEmptyList.asResourceLoading(),
+                aMovieItemsList.asResourceSuccess()
+            ).asFlow()
 
             val aMovieId = aMovieItemsList.first().id
             intViewModel()

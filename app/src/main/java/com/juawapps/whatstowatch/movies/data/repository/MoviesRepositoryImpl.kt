@@ -1,9 +1,6 @@
 package com.juawapps.whatstowatch.movies.data.repository
 
-import com.juawapps.whatstowatch.common.data.ListMapper
-import com.juawapps.whatstowatch.common.data.Mapper
-import com.juawapps.whatstowatch.common.data.Result
-import com.juawapps.whatstowatch.common.data.toResult
+import com.juawapps.whatstowatch.common.data.*
 import com.juawapps.whatstowatch.movies.data.api.MoviesApi
 import com.juawapps.whatstowatch.movies.data.database.MovieListItemDao
 import com.juawapps.whatstowatch.movies.data.model.MovieDetailDTO
@@ -21,23 +18,22 @@ class MoviesRepositoryImpl @Inject constructor(
     private val moviesListMapper: ListMapper<MovieListItemDTO, MovieListItem>,
     private val moviesDetailsMapper: Mapper<MovieDetailDTO, MovieDetails>
 ) : MoviesRepository {
-    override fun discoverMovies(): Flow<Result<List<MovieListItem>>> = flow {
-        val result = try {
+    override fun discoverMovies(): Flow<Resource<List<MovieListItem>>> = flow {
+        val cachedMovies  = moviesListMapper.map(moviesListItemDao.getAll())
+        emit(Resource.Loading(cachedMovies))
+
+        val apiResult = try {
             moviesApi.discoverMovies().toResult { it.items }
         } catch (exception: Exception) {
             Result.Error(exception)
         }
 
-        if (result is Result.Success) {
-            moviesListItemDao.replaceAll(result.data)
-            emit(Result.Success(moviesListMapper.map(moviesListItemDao.getAll())))
-        } else {
-            val getAll  = moviesListItemDao.getAll()
-            if (getAll.isNotEmpty()) {
-                emit(Result.Success(moviesListMapper.map(getAll)))
-            } else {
-                emit(result.map { emptyList<MovieListItem>() })
-            }
+        if (apiResult is Result.Success) {
+            moviesListItemDao.replaceAll(apiResult.data)
+            val updatedMovies  = moviesListItemDao.getAll()
+            emit(Resource.Success(moviesListMapper.map(updatedMovies)))
+        } else if (apiResult is Result.Error) {
+            emit(Resource.Error(apiResult.exception, cachedMovies))
         }
     }
 

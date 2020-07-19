@@ -3,7 +3,7 @@ package com.juawapps.whatstowatch.movies.ui.discover
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.juawapps.whatstowatch.R
-import com.juawapps.whatstowatch.common.data.collectResult
+import com.juawapps.whatstowatch.common.data.collectResource
 import com.juawapps.whatstowatch.common.ui.DefaultViewStateStore
 import com.juawapps.whatstowatch.common.ui.ViewStateStore
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
@@ -32,11 +32,11 @@ open class DiscoverMoviesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             fetchMoviesListChannel.consumeAsFlow().flatMapLatest {
-                viewStateStore.displayLoading()
                 discoverMoviesUseCase.invoke()
-            }.collectResult(
-                ifFailure = { viewStateStore.displayError(it) },
-                ifSuccess = { viewStateStore.displayMovies(it) }
+            }.collectResource(
+                ifSuccess = { data -> viewStateStore.displayMovies(data)},
+                ifLoading = {data ->viewStateStore.displayLoading(data)},
+                ifFailure = { error, data -> viewStateStore.displayError(error, data)}
             )
         }
 
@@ -51,14 +51,18 @@ open class DiscoverMoviesViewModel @Inject constructor(
         viewModelScope.launch { fetchMoviesListChannel.send(Unit) }
     }
 
-    private fun DiscoverMoviesStateStore.displayError(error: Throwable) {
-        val shouldErrorSateBePermanent = currentState.movies.isEmpty()
+    private fun DiscoverMoviesStateStore.displayError(
+        error: Throwable,
+        list: List<MovieListItem>
+    ) {
+        val shouldErrorSateBePermanent = list.isEmpty()
 
         updateState {
             copy(
                 isLoading = false,
                 isRefreshing = false,
-                errorMessage = if (shouldErrorSateBePermanent) R.string.error_message else null
+                errorMessage = if (shouldErrorSateBePermanent) R.string.error_message else null,
+                movies = list.map(MovieListUiItem.Factory::create)
             )
         }
 
@@ -78,13 +82,16 @@ open class DiscoverMoviesViewModel @Inject constructor(
         }
     }
 
-    private fun DiscoverMoviesStateStore.displayLoading() {
+    private fun DiscoverMoviesStateStore.displayLoading(
+        list: List<MovieListItem>
+    ) {
         updateState {
-            val isRefresh = movies.isNotEmpty()
+            val isRefresh = list.isNotEmpty()
 
             copy(
                 isLoading = !isRefresh,
-                isRefreshing = isRefresh
+                isRefreshing = isRefresh,
+                movies = list.map(MovieListUiItem.Factory::create)
             )
         }
     }
