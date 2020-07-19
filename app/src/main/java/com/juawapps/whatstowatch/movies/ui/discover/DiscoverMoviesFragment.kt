@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
+import com.google.android.material.snackbar.Snackbar
+import com.juawapps.whatstowatch.R
 import com.juawapps.whatstowatch.common.ui.*
 import com.juawapps.whatstowatch.databinding.FragmentDiscoverMoviesBinding
 import com.juawapps.whatstowatch.di.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_discover_movies.*
 import javax.inject.Inject
 
 class DiscoverMoviesFragment  @Inject constructor(
@@ -49,5 +53,6 @@ class DiscoverMoviesFragment  @Inject constructor(
     }
 
     private fun showErrorSnackBar() {
+        Snackbar.make(list, R.string.error_message, LENGTH_SHORT).show()
     }
 }
