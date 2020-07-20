@@ -74,7 +74,7 @@ class DiscoverMoviesViewModelTest {
     @Test
     fun `init() when discoverMoviesUseCase returns a success it updates the view movies list`() =
         testCoroutineRule.runBlockingTest {
-
+            // Arrange
             every {
                 discoverMoviesUseCase.invoke()
             } returns listOf(
@@ -82,24 +82,26 @@ class DiscoverMoviesViewModelTest {
                 aMovieItemsList.asResourceSuccess()
             ).asFlow()
 
+            // Act
             intViewModel()
 
-            verifySequence {
-                viewStateObserver.onChanged(baseViewState)
-                viewStateObserver.onChanged(baseViewState.copy(isLoading = true))
-                viewStateObserver.onChanged(
-                    baseViewState.copy(
-                        isLoading = false,
-                        movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
-                    )
+            // Assert
+            viewStateSequence(
+                baseViewState,
+                baseViewState.copy(
+                    isLoading = true
+                ),
+                baseViewState.copy(
+                    isLoading = false,
+                    movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
                 )
-            }
+            )
         }
 
     @Test
     fun `init() when discoverMoviesUseCase returns a failure it updates the view with an error`() =
         testCoroutineRule.runBlockingTest {
-
+            // Arrange
             every {
                 discoverMoviesUseCase.invoke()
             } returns listOf(
@@ -107,104 +109,116 @@ class DiscoverMoviesViewModelTest {
                 anError.asResourceError(aMovieEmptyList)
             ).asFlow()
 
+            // Act
             intViewModel()
 
-            verifySequence {
-                viewStateObserver.onChanged(baseViewState)
-                viewStateObserver.onChanged(baseViewState.copy(isLoading = true))
-                viewStateObserver.onChanged(
-                    baseViewState.copy(
-                        isLoading = false,
-                        errorMessage = R.string.error_message
-                    )
+            // Assert
+            viewStateSequence(
+                baseViewState,
+                baseViewState.copy(isLoading = true),
+                baseViewState.copy(
+                    isLoading = false,
+                    errorMessage = R.string.error_message
                 )
-            }
+            )
         }
 
     @Test
     fun `refresh() when discoverMoviesUseCase returns a success it updates the view movies list`() =
         testCoroutineRule.runBlockingTest {
-
+            // Arrange
             every {
                 discoverMoviesUseCase.invoke()
             } returns listOf(
                 aMovieItemsList.asResourceLoading(),
                 aSecondMovieItemsList.asResourceSuccess()
             ).asFlow()
-
             val viewStateWithMovieList = baseViewState.copy(
                 movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
             )
-            intViewModel(
-                initialViewState = viewStateWithMovieList
-            )
 
-            verifySequence {
-                viewStateObserver.onChanged(viewStateWithMovieList)
-                viewStateObserver.onChanged(viewStateWithMovieList.copy(isRefreshing = true))
-                viewStateObserver.onChanged(
-                    viewStateWithMovieList.copy(
-                        isRefreshing = false,
-                        movies = aSecondMovieItemsList.map(MovieListUiItem.Factory::create)
-                    )
+            // Act
+            intViewModel(initialViewState = viewStateWithMovieList)
+
+            // Assert
+            viewStateSequence(
+                viewStateWithMovieList,
+                viewStateWithMovieList.copy(isRefreshing = true),
+                viewStateWithMovieList.copy(
+                    isRefreshing = false,
+                    movies = aSecondMovieItemsList.map(MovieListUiItem.Factory::create)
                 )
-            }
+            )
         }
 
     @Test
     fun `refresh() when discoverMoviesUseCase returns a failure and the view has a movie list it triggers an error message`() =
         testCoroutineRule.runBlockingTest {
-
+            // Arrange
             every {
                 discoverMoviesUseCase.invoke()
             } returns listOf(
                 aMovieItemsList.asResourceLoading(),
                 anError.asResourceError(aMovieItemsList)
             ).asFlow()
-
             val viewStateWithMovieList = baseViewState.copy(
                 movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
             )
-            intViewModel(
-                initialViewState = viewStateWithMovieList
-            )
 
-            verifySequence {
-                viewStateObserver.onChanged(viewStateWithMovieList)
-                viewStateObserver.onChanged(viewStateWithMovieList.copy(isRefreshing = true))
-                viewStateObserver.onChanged(viewStateWithMovieList.copy(isRefreshing = false))
-                viewEffectObserver.onChanged(DiscoverMoviesViewEffect.ShowErrorMessage.asEvent())
-            }
+            // Act
+            intViewModel(initialViewState = viewStateWithMovieList)
+
+            // Assert
+            viewStateSequence(
+                viewStateWithMovieList,
+                viewStateWithMovieList.copy(isRefreshing = true),
+                viewStateWithMovieList.copy(isRefreshing = false)
+
+            )
+            hadEffect(
+                DiscoverMoviesViewEffect.ShowErrorMessage
+            )
         }
 
     @Test
     fun `tapOnMovie() triggers a NavigateToDetail event`() =
         testCoroutineRule.runBlockingTest {
-
+            // Arrange
             every {
                 discoverMoviesUseCase.invoke()
             } returns listOf(
                 aMovieEmptyList.asResourceLoading(),
                 aMovieItemsList.asResourceSuccess()
             ).asFlow()
-
             val aMovieId = aMovieItemsList.first().id
             intViewModel()
+
+            // Act
             viewModel.tapOnMovie(aMovieId)
 
-            verifySequence {
-                viewStateObserver.onChanged(baseViewState)
-                viewStateObserver.onChanged(baseViewState.copy(isLoading = true))
-                viewStateObserver.onChanged(
-                    baseViewState.copy(
-                        isLoading = false,
-                        movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
-                    )
+            // Assert
+            viewStateSequence(
+                baseViewState,
+                baseViewState.copy(isLoading = true),
+                baseViewState.copy(
+                    isLoading = false,
+                    movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
                 )
-                viewEffectObserver.onChanged(
-                    DiscoverMoviesViewEffect.NavigateToDetail(aMovieId).asEvent()
-                )
-            }
+            )
+            hadEffect(
+                DiscoverMoviesViewEffect.NavigateToDetail(aMovieId)
+            )
         }
 
+    private fun hadEffect(effect: DiscoverMoviesViewEffect) {
+        verifySequence {
+            viewEffectObserver.onChanged(effect.asEvent())
+        }
+    }
+
+    private fun viewStateSequence(vararg viewStates: DiscoverMoviesViewState) {
+        verifySequence {
+            viewStates.forEach { viewStateObserver.onChanged(it) }
+        }
+    }
 }
