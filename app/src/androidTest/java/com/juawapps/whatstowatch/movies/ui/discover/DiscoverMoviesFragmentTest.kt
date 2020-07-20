@@ -5,8 +5,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.agoda.kakao.screen.Screen.Companion.onScreen
 import com.juawapps.whatstowatch.R
@@ -39,6 +37,7 @@ class DiscoverMoviesFragmentTest {
 
     @Test
     fun itDisplaysMoviesList() {
+        // Arrange
         val aMovieListUiItem = movieListUiItemFixture {
             copy(
                 title = "Greyhound",
@@ -54,8 +53,10 @@ class DiscoverMoviesFragmentTest {
             every { viewState } returns aViewState.toLiveData()
         }
 
+        // Act
         startFragment(aViewModel)
 
+        // Assert
         onScreen<DiscoverMoviesScreen> {
             movies {
                 firstChild<DiscoverMoviesScreen.MovieListItem> {
@@ -71,6 +72,7 @@ class DiscoverMoviesFragmentTest {
 
     @Test
     fun itDisplaysErrorView() {
+        // Arrange
         val aViewState = DiscoverMoviesViewState(
             errorMessage = R.string.error_message
         )
@@ -78,8 +80,10 @@ class DiscoverMoviesFragmentTest {
             every { viewState } returns aViewState.toLiveData()
         }
 
+        // Act
         startFragment(aViewModel)
 
+        // Assert
         onScreen<LoadingScreen> {
           errorIcon.matches { isDisplayed() }
           errorTitle.matches { isDisplayed() }
@@ -89,6 +93,7 @@ class DiscoverMoviesFragmentTest {
 
     @Test
     fun itDisplaysLoadingView() {
+        // Arrange
         val aViewState = DiscoverMoviesViewState(
             isLoading = true
         )
@@ -96,8 +101,10 @@ class DiscoverMoviesFragmentTest {
             every { viewState } returns aViewState.toLiveData()
         }
 
+        // Act
         startFragment(aViewModel)
 
+        // Assert
         onScreen<LoadingScreen> {
             loadingView.matches { isDisplayed() }
         }
@@ -105,6 +112,7 @@ class DiscoverMoviesFragmentTest {
 
     @Test
     fun itForwardsListTapEvent() {
+        // Arrange
         val aMovieListUiItem = movieListUiItemFixture {
             copy(id = 1)
         }
@@ -115,6 +123,7 @@ class DiscoverMoviesFragmentTest {
             every { viewState } returns aViewState.toLiveData()
         }
 
+        // Act
         startFragment(aViewModel)
         onScreen<DiscoverMoviesScreen> {
             movies {
@@ -124,11 +133,13 @@ class DiscoverMoviesFragmentTest {
             }
         }
 
+        // Assert
         verify { aViewModel.tapOnMovie(1) }
     }
 
     @Test
     fun itNavigatesToDetails() {
+        // Arrange
         val aViewEffectEvent = DiscoverMoviesViewEffect.NavigateToDetail(1).asEvent()
         val aMovieListUiItem = movieListUiItemFixture()
         val aViewState = DiscoverMoviesViewState(movies = listOf(aMovieListUiItem))
@@ -139,8 +150,10 @@ class DiscoverMoviesFragmentTest {
         val expectedAction =
             DiscoverMoviesFragmentDirections.actionDiscoverMoviesFragmentToMovieDetailsFragment(1)
 
+        // Act
         startFragment(aViewModel)
 
+        // Assert
         verify { mockNavController.navigate(expectedAction) }
     }
 
