@@ -14,9 +14,7 @@ import javax.inject.Inject
 
 typealias MoviesDetailStateStore = DefaultViewStateStore<MoviesDetailsViewState, MovieDetailsViewEffect>
 
-// open is needed here in order to mock the ViewModel
-// TODO: Investigate if it is possible to configure mockk so we don't need to use the open keyword
-open class MovieDetailsViewModel(
+class MovieDetailsViewModel(
     private val movieId: Long,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val viewStateStore: MoviesDetailStateStore = DefaultViewStateStore(

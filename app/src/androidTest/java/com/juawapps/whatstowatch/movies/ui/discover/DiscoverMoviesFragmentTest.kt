@@ -128,7 +128,7 @@ class DiscoverMoviesFragmentTest {
     }
 
     @Test
-    fun itNavigatesToAuctionsDetails() {
+    fun itNavigatesToDetails() {
         val aViewEffectEvent = DiscoverMoviesViewEffect.NavigateToDetail(1).asEvent()
         val aMovieListUiItem = movieListUiItemFixture()
         val aViewState = DiscoverMoviesViewState(movies = listOf(aMovieListUiItem))
