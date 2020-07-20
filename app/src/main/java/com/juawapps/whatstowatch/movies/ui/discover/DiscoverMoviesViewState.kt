@@ -13,7 +13,4 @@ data class DiscoverMoviesViewState (
 
     @Inject
     constructor() : this(movies = emptyList())
-
-    val isEmptyView: Boolean
-        get() = movies.isEmpty() && !isLoading
 }

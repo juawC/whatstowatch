@@ -13,12 +13,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.juawapps.whatstowatch.R
-import com.juawapps.whatstowatch.common.ui.*
+import com.juawapps.whatstowatch.common.ui.observeEffects
 import com.juawapps.whatstowatch.databinding.FragmentMovieDetailsBinding
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
 import javax.inject.Inject
 
-class MovieDetailsFragment  @Inject constructor(
+class MovieDetailsFragment @Inject constructor(
     private val viewModelFactory: MovieDetailsViewModel.Factory
 ) : Fragment() {
 
@@ -43,7 +43,7 @@ class MovieDetailsFragment  @Inject constructor(
         setUpToolbar(topAppBar)
 
         observeEffects(movieDetailsViewModel) {
-            when(this) {
+            when (this) {
                 is MovieDetailsViewEffect.ShowErrorMessage -> showErrorSnackBar()
             }
         }

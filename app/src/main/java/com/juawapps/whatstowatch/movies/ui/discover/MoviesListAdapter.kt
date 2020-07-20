@@ -10,7 +10,7 @@ import com.juawapps.whatstowatch.databinding.MovieListItemBinding
 
 class MoviesListAdapter(
     private val viewActions: DiscoverMoviesViewActions
-) : BindingListAdapter<MovieListUiItem, MovieListItemBinding>(RecipeSearchDiff()) {
+) : BindingListAdapter<MovieListUiItem, MovieListItemBinding>(MoviesListDiff()) {
 
     override fun bind(
         binding: MovieListItemBinding,
@@ -21,7 +21,6 @@ class MoviesListAdapter(
 
         binding.item = item
         binding.viewActions = viewActions
-        binding.image.tag = item
     }
 
     override fun createBinding(parent: ViewGroup): MovieListItemBinding {
@@ -34,7 +33,7 @@ class MoviesListAdapter(
         )
     }
 
-    class RecipeSearchDiff : DiffUtil.ItemCallback<MovieListUiItem>() {
+    class MoviesListDiff : DiffUtil.ItemCallback<MovieListUiItem>() {
         override fun areItemsTheSame(
             oldItem: MovieListUiItem,
             newItem: MovieListUiItem

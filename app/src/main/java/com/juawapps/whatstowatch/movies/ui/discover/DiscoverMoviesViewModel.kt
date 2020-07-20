@@ -34,9 +34,9 @@ open class DiscoverMoviesViewModel @Inject constructor(
             fetchMoviesListChannel.consumeAsFlow().flatMapLatest {
                 discoverMoviesUseCase.invoke()
             }.collectResource(
-                ifSuccess = { data -> viewStateStore.displayMovies(data)},
-                ifLoading = {data ->viewStateStore.displayLoading(data)},
-                ifFailure = { error, data -> viewStateStore.displayError(error, data)}
+                ifSuccess = { data -> viewStateStore.displayMovies(data) },
+                ifLoading = { data -> viewStateStore.displayLoading(data) },
+                ifFailure = { error, data -> viewStateStore.displayError(error, data) }
             )
         }
 
