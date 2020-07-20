@@ -5,10 +5,12 @@ import com.agoda.kakao.screen.Screen.Companion.onScreen
 import com.juawapps.whatstowatch.MainActivity
 import com.juawapps.whatstowatch.di.ApiConfigsModule
 import com.juawapps.whatstowatch.screens.DiscoverMoviesScreen
+import com.juawapps.whatstowatch.screens.MoviesDetailsScreen
 import com.juawapps.whatstowatch.utils.mockserver.MockServerTestRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -44,6 +46,28 @@ class MoviesFeatureTest {
                     voteAverage { hasText("7.4") }
                 }
             }
+        }
+    }
+
+    @Test
+    fun itOpensMovieDetail() {
+        launchActivity()
+
+        onScreen<DiscoverMoviesScreen> {
+            movies {
+                firstChild<DiscoverMoviesScreen.MovieListItem> {
+                   click()
+                }
+            }
+        }
+
+        onScreen<MoviesDetailsScreen> {
+            title { hasText("Greyhound") }
+            year { hasText("Year: 2020") }
+            language { hasText("Language: en") }
+            voteAverage { hasText("7.5") }
+            votes { hasText("419 votes") }
+            overviewText { hasText(containsString("A first-time captain leads a convoy")) }
         }
     }
 
