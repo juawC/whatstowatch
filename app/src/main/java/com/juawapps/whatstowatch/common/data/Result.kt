@@ -39,6 +39,16 @@ sealed class Result<out T> {
         }
     }
 
+    suspend fun <R> suspendFold(
+        ifFailure: suspend (Exception) -> R,
+        ifSuccess: suspend (T) -> R
+    ): R {
+        return when (this) {
+            is Success -> ifSuccess(data)
+            is Error -> ifFailure(exception)
+        }
+    }
+
     override fun toString(): String {
         return when (this) {
             is Success<*> -> "Success[data=$data]"

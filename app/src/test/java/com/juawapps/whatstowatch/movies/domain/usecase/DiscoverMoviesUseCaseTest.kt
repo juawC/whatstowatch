@@ -1,12 +1,11 @@
 package com.juawapps.whatstowatch.movies.domain.usecase
 
 import com.appmattus.kotlinfixture.kotlinFixture
+import com.juawapps.whatstowatch.common.data.asResourceSuccess
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 import com.juawapps.whatstowatch.movies.domain.repository.MoviesRepository
 import com.juawapps.whatstowatch.util.TestCoroutineRule
 import com.juawapps.whatstowatch.util.asList
-import com.juawapps.whatstowatch.util.asResourceSuccess
-import com.juawapps.whatstowatch.util.asSuccess
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

@@ -18,28 +18,38 @@ class MoviesRepositoryImpl @Inject constructor(
     private val moviesListMapper: ListMapper<MovieListItemDTO, MovieListItem>,
     private val moviesDetailsMapper: Mapper<MovieDetailDTO, MovieDetails>
 ) : MoviesRepository {
-    override fun discoverMovies(): Flow<Resource<List<MovieListItem>>> = flow {
-        val cachedMovies  = moviesListMapper.map(moviesListItemDao.getAll())
-        emit(Resource.Loading(cachedMovies))
 
-        val apiResult = try {
-            moviesApi.discoverMovies().toResult { it.items }
-        } catch (exception: Exception) {
-            Result.Error(exception)
-        }
-
-        if (apiResult is Result.Success) {
-            moviesListItemDao.replaceAll(apiResult.data)
-            val updatedMovies  = moviesListItemDao.getAll()
-            emit(Resource.Success(moviesListMapper.map(updatedMovies)))
-        } else if (apiResult is Result.Error) {
-            emit(Resource.Error(apiResult.exception, cachedMovies))
-        }
-    }
+    override fun discoverMovies(): Flow<Resource<List<MovieListItem>>> = flowDataSource(
+        apiGetCall = suspend { moviesApi.discoverMovies() }.wrapWithResult { it.items },
+        dbGetCall = moviesListItemDao::getAll,
+        dbSaveCall = moviesListItemDao::replaceAll,
+        mapToModel = moviesListMapper::map
+    )
 
     override suspend fun getMovieDetails(id: Long): Result<MovieDetails> = try {
         moviesApi.getMovieDetails(id).toResult(moviesDetailsMapper::map)
     } catch (exception: Exception) {
         Result.Error(exception)
+    }
+
+    private fun <ModelType, ModelTypeDB> flowDataSource(
+        apiGetCall: suspend () -> Result<ModelTypeDB>,
+        dbGetCall: suspend () -> ModelTypeDB,
+        dbSaveCall: suspend (ModelTypeDB) -> Unit,
+        mapToModel: (ModelTypeDB) -> ModelType
+    ): Flow<Resource<ModelType>> = flow {
+        val cachedData = mapToModel(dbGetCall())
+
+        emit(cachedData.asResourceLoading())
+        emit(
+            apiGetCall().suspendFold(
+                ifFailure = { exception -> exception.asResourceError(cachedData) },
+                ifSuccess = { data ->
+                    dbSaveCall(data)
+                    val updatedData = mapToModel(dbGetCall())
+                    updatedData.asResourceSuccess()
+                }
+            )
+        )
     }
 }

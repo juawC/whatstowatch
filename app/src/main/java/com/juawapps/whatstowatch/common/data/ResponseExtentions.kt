@@ -20,3 +20,14 @@ fun <T> Response<T>.toResult(): Result<T> {
 fun <T, R> Response<T>.toResult(mapper: (T) -> R): Result<R> {
     return toResult().map(mapper)
 }
+
+fun <T, R> (suspend () -> Response<T>).wrapWithResult(
+    mapper: (T) -> R
+): suspend () -> Result<R>  = {
+    try {
+        this().toResult().map(mapper)
+    } catch (exception: Exception) {
+        Result.Error(exception)
+    }
+}
+

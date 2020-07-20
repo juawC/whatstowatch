@@ -4,6 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.juawapps.whatstowatch.R
+import com.juawapps.whatstowatch.common.data.asResourceError
+import com.juawapps.whatstowatch.common.data.asResourceLoading
+import com.juawapps.whatstowatch.common.data.asResourceSuccess
 import com.juawapps.whatstowatch.common.ui.DefaultViewStateStore
 import com.juawapps.whatstowatch.common.ui.Event
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
