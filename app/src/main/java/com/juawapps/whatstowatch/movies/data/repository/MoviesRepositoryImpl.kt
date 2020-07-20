@@ -20,32 +20,33 @@ class MoviesRepositoryImpl @Inject constructor(
 ) : MoviesRepository {
 
     override fun discoverMovies(): Flow<Resource<List<MovieListItem>>> = flowDataSource(
-        apiGetCall = { suspend { moviesApi.discoverMovies() }.wrapWithResult { it.items } },
-        dbGetCall = moviesListItemDao::getAll,
-        dbSaveCall = moviesListItemDao::replaceAll,
-        mapToModel = moviesListMapper::map
+        fetchFromApi = { wrapWithResult { moviesApi.discoverMovies() }.map { it.items } },
+        fetchFromDatabase = moviesListItemDao::getAll,
+        saveInDatabase = moviesListItemDao::replaceAll,
+        mapToDomain = moviesListMapper::map,
+        mapToDatabase = { this }
     )
 
     override suspend fun getMovieDetails(id: Long): Result<MovieDetails> {
-        return suspend { moviesApi.getMovieDetails(id) }.wrapWithResult(moviesDetailsMapper::map)
+        return wrapWithResult { moviesApi.getMovieDetails(id) }.map(moviesDetailsMapper::map)
     }
 
-    private fun <ModelType, ModelTypeDB> flowDataSource(
-        apiGetCall: suspend () -> Result<ModelTypeDB>,
-        dbGetCall: suspend () -> ModelTypeDB,
-        dbSaveCall: suspend (ModelTypeDB) -> Unit,
-        mapToModel: ModelTypeDB.() -> ModelType
-    ): Flow<Resource<ModelType>> = flow {
-        val cachedData = dbGetCall().mapToModel()
+    private fun <DomainType, DatabaseType, ApiType> flowDataSource(
+        fetchFromApi: suspend () -> Result<ApiType>,
+        fetchFromDatabase: suspend () -> DatabaseType,
+        saveInDatabase: suspend (DatabaseType) -> Unit,
+        mapToDomain: DatabaseType.() -> DomainType,
+        mapToDatabase: ApiType.() -> DatabaseType
+    ): Flow<Resource<DomainType>> = flow {
+        val cachedData = fetchFromDatabase().mapToDomain()
 
         emit(cachedData.asResourceLoading())
         emit(
-            apiGetCall().suspendFold(
-                ifFailure = { exception -> exception.asResourceError(cachedData) },
-                ifSuccess = { data ->
-                    dbSaveCall(data)
-                    val updatedData = dbGetCall().mapToModel()
-                    updatedData.asResourceSuccess()
+            fetchFromApi().suspendFold(
+                ifFailure = { apiException -> apiException.asResourceError(cachedData) },
+                ifSuccess = { apiData ->
+                    saveInDatabase(apiData.mapToDatabase())
+                    fetchFromDatabase().mapToDomain().asResourceSuccess()
                 }
             )
         )

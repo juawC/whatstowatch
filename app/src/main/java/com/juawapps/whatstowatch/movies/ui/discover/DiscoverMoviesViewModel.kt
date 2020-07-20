@@ -32,7 +32,7 @@ open class DiscoverMoviesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             fetchMoviesListChannel.consumeAsFlow().flatMapLatest {
-                discoverMoviesUseCase.invoke()
+                discoverMoviesUseCase()
             }.collectResource(
                 ifSuccess = { data -> viewStateStore.displayMovies(data) },
                 ifLoading = { data -> viewStateStore.displayLoading(data) },

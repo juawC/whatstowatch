@@ -21,11 +21,11 @@ fun <T, R> Response<T>.toResult(mapper: (T) -> R): Result<R> {
     return toResult().map(mapper)
 }
 
-suspend fun <T, R> (suspend () -> Response<T>).wrapWithResult(
-    mapper: (T) -> R
-): Result<R>  =
+suspend fun <T> wrapWithResult(
+    call: (suspend () -> Response<T>)
+): Result<T>  =
     try {
-        this().toResult().map(mapper)
+        call().toResult()
     } catch (exception: Exception) {
         Result.Error(DomainException.NetworkError(exception))
     }
