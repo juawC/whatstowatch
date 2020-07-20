@@ -1,7 +1,7 @@
 package com.juawapps.whatstowatch.common.data
 
+import com.juawapps.whatstowatch.common.domain.DomainException
 import retrofit2.Response
-import java.io.IOException
 
 fun <T> Response<T>.toResult(): Result<T> {
 
@@ -13,7 +13,7 @@ fun <T> Response<T>.toResult(): Result<T> {
     }
 
     return Result.Error(
-        IOException("HTTP ERROR: ${code()} ${message()}")
+        DomainException.HttpError(code(), message())
     )
 }
 
@@ -21,13 +21,11 @@ fun <T, R> Response<T>.toResult(mapper: (T) -> R): Result<R> {
     return toResult().map(mapper)
 }
 
-fun <T, R> (suspend () -> Response<T>).wrapWithResult(
+suspend fun <T, R> (suspend () -> Response<T>).wrapWithResult(
     mapper: (T) -> R
-): suspend () -> Result<R>  = {
+): Result<R>  =
     try {
         this().toResult().map(mapper)
     } catch (exception: Exception) {
-        Result.Error(exception)
+        Result.Error(DomainException.NetworkError(exception))
     }
-}
-

@@ -20,16 +20,14 @@ class MoviesRepositoryImpl @Inject constructor(
 ) : MoviesRepository {
 
     override fun discoverMovies(): Flow<Resource<List<MovieListItem>>> = flowDataSource(
-        apiGetCall = suspend { moviesApi.discoverMovies() }.wrapWithResult { it.items },
+        apiGetCall = { suspend { moviesApi.discoverMovies() }.wrapWithResult { it.items } },
         dbGetCall = moviesListItemDao::getAll,
         dbSaveCall = moviesListItemDao::replaceAll,
         mapToModel = moviesListMapper::map
     )
 
-    override suspend fun getMovieDetails(id: Long): Result<MovieDetails> = try {
-        moviesApi.getMovieDetails(id).toResult(moviesDetailsMapper::map)
-    } catch (exception: Exception) {
-        Result.Error(exception)
+    override suspend fun getMovieDetails(id: Long): Result<MovieDetails> {
+        return suspend { moviesApi.getMovieDetails(id) }.wrapWithResult(moviesDetailsMapper::map)
     }
 
     private fun <ModelType, ModelTypeDB> flowDataSource(
