@@ -2,4 +2,5 @@
 <resources>
     <attr name="positiveColor" format="color" />
     <attr name="mehColor" format="color" />
+    <attr name="colorPrimaryLight" format="color" />
 </resources>

@@ -17,7 +17,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        app:setVisible="@{viewState.isLoading || viewState.errorMessage != null}">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineStart"
@@ -54,6 +56,7 @@
             app:layout_constraintEnd_toEndOf="@+id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@+id/guidelineStart"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.45"
             app:layout_constraintVertical_chainStyle="packed"
             app:setVisible="@{viewState.errorMessage != null}"
             app:srcCompat="@drawable/ic_error"

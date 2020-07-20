@@ -3,6 +3,7 @@
     <style name="Theme.WhatsToWatch" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryLight">@color/red_500</item>
         <item name="colorPrimaryDark">@color/red_900</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
