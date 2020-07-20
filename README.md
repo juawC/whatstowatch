@@ -1,7 +1,7 @@
 # WhatsToWatch
 
 This is a showcase app using [themoviedb.org](https://developers.themoviedb.org/).
-The app has just two screens, one screen with the list of movies and a second screen with detailed view of the movie detail.
+The app has just two screens, one screen with the list of movies and a second screen with detailed view of the movie.
 
 ## Screens
 **Discover movies** / **Detail View**<br/>
@@ -12,12 +12,12 @@ The app has just two screens, one screen with the list of movies and a second sc
 The project's code is organized first by feature and then by a clean architecture layer (i.e. **data**, **domain** and **presentation**). This means that first we have a feature, (e.g. Movies in this case) and then inside that feature we will have three packages, one for each clean architecture layer. There is also a comun package where shared code between features lives.
 
 ### Ui / Presentation layer
-This layer is closest to what the user sees on the screen. And here we have the ViewModel, ViewState, ViewActions, UI Models and Fragment/Activity which should be only responsible for the view formatting any other logic should live in the domain layer.
-To avoid inheritance the ViewModel's depend of a ViewStateStore interface. The purpose of this interface is to provide a standard way of communicating with the view as well to have a possibility of having it implemented by a default delegate.
-**Currenty the DiscoverMoviesViewModel have an experimental implementation of Flows/Channels, this was done to quickly experiment how can we consume a ChannelFlow on a ViewModel, however the lifecycle implications of this aproach weren't fully explored yet.**
+This layer is closest to what the user sees on the screen. And here we have the ViewModel, ViewState, ViewActions, UI Models and Fragment/Activity which should be only responsible for the view formatting. Any other logic should live in the domain layer.
+To avoid inheritance the ViewModel depends on a ViewStateStore interface. The purpose of this interface is to provide a standard way of communicating with the view and a default implementation of it using a delegate.
+**Currently the DiscoverMoviesViewModel have an experimental implementation of Flows/Channels, this was done to quickly experiment how we can consume a ChannelFlow on a ViewModel, however the lifecycle implications of this approach weren't fully explored yet.**
 
 ### Domain layer
-This is the business logic layer of the application and it should be the independent of any other layers. This allows to make domain models and business logic independent from other layers. **Currently this layer just have domain models and 'dumb' UseCases.**
+This is the business logic layer of the application and it should be independent of any other layers. This allows to make domain models and business logic independent from other layers.**Currently this layer just have domain models and 'dumb' UseCases.**
 
 
 ### Data layer
@@ -25,16 +25,15 @@ Manages application data and exposes these data sources as repositories to the d
 
 
 ## Tests
-This project was created to explore new technologies/architecture, so tests weren't done as thoroughly as they should. Currently the only parts tested are: DiscoverMovies UI logic, UseCases, DefaultImageUrl class.
-To test the DiscoverMovies UI logic three kinds of tests were implemented, ViewModel unit tests, FragmentScenario tests, and a end to end test (The end to end test should test not only the DiscoverMovies screen but also the entire Movies feature).
-
- 
+This project was created to explore new technologies/architecture, so tests weren't done as thoroughly as they should. Currently the files tested are: DiscoverMovies UI logic, UseCases, DefaultImageUrl class.
+To test DiscoverMovies UI logic three kinds of tests were implemented, ViewModel unit tests, FragmentScenario tests, and a end to end test (The end to end test should test not only the DiscoverMovies screen but also the entire Movies feature).
 
 
 ## Tech-stack
 This project is written in kotlin and takes advantage of many popular
 libraries and tools of the Android ecosystem.
 Some of the libraries used:
+* [Hilt](https://dagger.dev/hilt/)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * [coil](https://github.com/coil-kt/coil)
 * [squareup.moshi](https://github.com/square/moshi)
