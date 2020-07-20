@@ -25,7 +25,7 @@ Manages application data and exposes these data sources as repositories to the d
 
 
 ## Tests
-This project was created to explore new technologies/architecture, so tests weren't done as thoroughly as they should. Currently the files tested are: DiscoverMovies UI logic, UseCases, DefaultImageUrl class.
+This project was created to explore new technologies/architecture, so tests weren't done as thoroughly as they should. Currently the files tested are: DiscoverMovies UI logic, UseCases, DefaultImageUrl class, and MoviesRepositoryImpl.
 To test DiscoverMovies UI logic three kinds of tests were implemented, ViewModel unit tests, FragmentScenario tests, and a end to end test (The end to end test should test not only the DiscoverMovies screen but also the entire Movies feature).
 
 
