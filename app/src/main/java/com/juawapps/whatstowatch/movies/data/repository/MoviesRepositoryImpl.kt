@@ -34,9 +34,9 @@ class MoviesRepositoryImpl @Inject constructor(
         apiGetCall: suspend () -> Result<ModelTypeDB>,
         dbGetCall: suspend () -> ModelTypeDB,
         dbSaveCall: suspend (ModelTypeDB) -> Unit,
-        mapToModel: (ModelTypeDB) -> ModelType
+        mapToModel: ModelTypeDB.() -> ModelType
     ): Flow<Resource<ModelType>> = flow {
-        val cachedData = mapToModel(dbGetCall())
+        val cachedData = dbGetCall().mapToModel()
 
         emit(cachedData.asResourceLoading())
         emit(
@@ -44,7 +44,7 @@ class MoviesRepositoryImpl @Inject constructor(
                 ifFailure = { exception -> exception.asResourceError(cachedData) },
                 ifSuccess = { data ->
                     dbSaveCall(data)
-                    val updatedData = mapToModel(dbGetCall())
+                    val updatedData = dbGetCall().mapToModel()
                     updatedData.asResourceSuccess()
                 }
             )
