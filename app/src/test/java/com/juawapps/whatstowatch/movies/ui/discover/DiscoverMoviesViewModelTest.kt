@@ -11,7 +11,8 @@ import com.juawapps.whatstowatch.common.ui.DefaultViewStateStore
 import com.juawapps.whatstowatch.common.ui.Event
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 import com.juawapps.whatstowatch.movies.domain.usecase.DiscoverMoviesUseCase
-import com.juawapps.whatstowatch.util.*
+import com.juawapps.whatstowatch.util.TestCoroutineRule
+import com.juawapps.whatstowatch.util.asEvent
 import io.mockk.MockKAnnotations
 import io.mockk.confirmVerified
 import io.mockk.every
@@ -75,7 +76,7 @@ class DiscoverMoviesViewModelTest {
     }
 
     @Test
-    fun `init() when discoverMoviesUseCase returns a success it updates the view movies list`() =
+    fun `init() when discoverMoviesUseCase returns successfully it updates the view movies list`() =
         testCoroutineRule.runBlockingTest {
             // Arrange
             every {
@@ -89,7 +90,7 @@ class DiscoverMoviesViewModelTest {
             intViewModel()
 
             // Assert
-            viewStateSequence(
+            assertViewStateSequence(
                 baseViewState,
                 baseViewState.copy(
                     isLoading = true
@@ -102,7 +103,7 @@ class DiscoverMoviesViewModelTest {
         }
 
     @Test
-    fun `init() when discoverMoviesUseCase returns a failure it updates the view with an error`() =
+    fun `init() when discoverMoviesUseCase fails it updates the view with an error`() =
         testCoroutineRule.runBlockingTest {
             // Arrange
             every {
@@ -116,9 +117,11 @@ class DiscoverMoviesViewModelTest {
             intViewModel()
 
             // Assert
-            viewStateSequence(
+            assertViewStateSequence(
                 baseViewState,
-                baseViewState.copy(isLoading = true),
+                baseViewState.copy(
+                    isLoading = true
+                ),
                 baseViewState.copy(
                     isLoading = false,
                     errorMessage = R.string.error_message
@@ -127,7 +130,7 @@ class DiscoverMoviesViewModelTest {
         }
 
     @Test
-    fun `refresh() when discoverMoviesUseCase returns a success it updates the view movies list`() =
+    fun `refresh() when discoverMoviesUseCase returns successfully it updates the view movies list`() =
         testCoroutineRule.runBlockingTest {
             // Arrange
             every {
@@ -144,7 +147,7 @@ class DiscoverMoviesViewModelTest {
             intViewModel(initialViewState = viewStateWithMovieList)
 
             // Assert
-            viewStateSequence(
+            assertViewStateSequence(
                 viewStateWithMovieList,
                 viewStateWithMovieList.copy(isRefreshing = true),
                 viewStateWithMovieList.copy(
@@ -155,7 +158,7 @@ class DiscoverMoviesViewModelTest {
         }
 
     @Test
-    fun `refresh() when discoverMoviesUseCase returns a failure and the view has a movie list it triggers an error message`() =
+    fun `refresh() when discoverMoviesUseCase fails and the view has a movie list it triggers an error message`() =
         testCoroutineRule.runBlockingTest {
             // Arrange
             every {
@@ -172,7 +175,7 @@ class DiscoverMoviesViewModelTest {
             intViewModel(initialViewState = viewStateWithMovieList)
 
             // Assert
-            viewStateSequence(
+            assertViewStateSequence(
                 viewStateWithMovieList,
                 viewStateWithMovieList.copy(isRefreshing = true),
                 viewStateWithMovieList.copy(isRefreshing = false)
@@ -200,7 +203,7 @@ class DiscoverMoviesViewModelTest {
             viewModel.tapOnMovie(aMovieId)
 
             // Assert
-            viewStateSequence(
+            assertViewStateSequence(
                 baseViewState,
                 baseViewState.copy(isLoading = true),
                 baseViewState.copy(
@@ -219,7 +222,7 @@ class DiscoverMoviesViewModelTest {
         }
     }
 
-    private fun viewStateSequence(vararg viewStates: DiscoverMoviesViewState) {
+    private fun assertViewStateSequence(vararg viewStates: DiscoverMoviesViewState) {
         verifySequence {
             viewStates.forEach { viewStateObserver.onChanged(it) }
         }

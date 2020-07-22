@@ -16,7 +16,7 @@ class MovieUiItemFormatterTest {
     }
 
     @Test
-    fun `getVoteColorAttr() when voteAverage is greater than 07 it gets positive voteColorAttr`() {
+    fun `getVoteColorAttr() when voteAverage is greater than 7 it gets positive voteColorAttr`() {
 
         assertEquals(
             R.attr.positiveColor,
