@@ -1,26 +1,21 @@
 package com.juawapps.whatstowatch.movies.ui.discover
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.juawapps.whatstowatch.R
 import com.juawapps.whatstowatch.common.data.asResourceError
 import com.juawapps.whatstowatch.common.data.asResourceLoading
 import com.juawapps.whatstowatch.common.data.asResourceSuccess
 import com.juawapps.whatstowatch.common.ui.DefaultViewStateStore
-import com.juawapps.whatstowatch.common.ui.Event
 import com.juawapps.whatstowatch.movies.domain.model.MovieListItem
 import com.juawapps.whatstowatch.movies.domain.usecase.DiscoverMoviesUseCase
 import com.juawapps.whatstowatch.util.TestCoroutineRule
-import com.juawapps.whatstowatch.util.asEvent
+import com.juawapps.whatstowatch.util.ViewModelTestRule
 import io.mockk.MockKAnnotations
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.verifySequence
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.asFlow
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,44 +29,31 @@ class DiscoverMoviesViewModelTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
 
+    @get: Rule
+    val viewModelTestRule = ViewModelTestRule<DiscoverMoviesViewState, DiscoverMoviesViewEffect>()
+
     @MockK
     private lateinit var viewModel: DiscoverMoviesViewModel
-
     @MockK
     private lateinit var discoverMoviesUseCase: DiscoverMoviesUseCase
 
-    @MockK
-    private lateinit var viewStateObserver: Observer<DiscoverMoviesViewState>
-
-    @MockK
-    private lateinit var viewEffectObserver: Observer<Event<DiscoverMoviesViewEffect>>
-
-    val fixture = kotlinFixture()
-
+    private val fixture = kotlinFixture()
     private val aMovieItemsList = fixture<List<MovieListItem>>()
     private val aMovieEmptyList = emptyList<MovieListItem>()
     private val aSecondMovieItemsList = fixture<List<MovieListItem>>()
     private val anError: Exception = Exception()
-    private val baseViewState = DiscoverMoviesViewState()
+    private val aBaseViewState = DiscoverMoviesViewState()
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = true)
     }
 
-    @After
-    fun tearDown() {
-        confirmVerified(viewStateObserver, viewEffectObserver)
-    }
-
     private fun intViewModel(
-        initialViewState: DiscoverMoviesViewState = baseViewState
+        initialViewState: DiscoverMoviesViewState = aBaseViewState
     ) {
         val viewStateStore: DiscoverMoviesStateStore = DefaultViewStateStore(initialViewState)
-        viewStateStore.apply {
-            viewState.observeForever(viewStateObserver)
-            viewEffect.observeForever(viewEffectObserver)
-        }
+        viewModelTestRule.observe(viewStateStore)
         viewModel = DiscoverMoviesViewModel(discoverMoviesUseCase, viewStateStore)
     }
 
@@ -90,12 +72,12 @@ class DiscoverMoviesViewModelTest {
             intViewModel()
 
             // Assert
-            assertViewStateSequence(
-                baseViewState,
-                baseViewState.copy(
+            viewModelTestRule.assertViewStateSequence(
+                aBaseViewState,
+                aBaseViewState.copy(
                     isLoading = true
                 ),
-                baseViewState.copy(
+                aBaseViewState.copy(
                     isLoading = false,
                     movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
                 )
@@ -117,12 +99,12 @@ class DiscoverMoviesViewModelTest {
             intViewModel()
 
             // Assert
-            assertViewStateSequence(
-                baseViewState,
-                baseViewState.copy(
+            viewModelTestRule.assertViewStateSequence(
+                aBaseViewState,
+                aBaseViewState.copy(
                     isLoading = true
                 ),
-                baseViewState.copy(
+                aBaseViewState.copy(
                     isLoading = false,
                     errorMessage = R.string.error_message
                 )
@@ -139,7 +121,7 @@ class DiscoverMoviesViewModelTest {
                 aMovieItemsList.asResourceLoading(),
                 aSecondMovieItemsList.asResourceSuccess()
             ).asFlow()
-            val viewStateWithMovieList = baseViewState.copy(
+            val viewStateWithMovieList = aBaseViewState.copy(
                 movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
             )
 
@@ -147,7 +129,7 @@ class DiscoverMoviesViewModelTest {
             intViewModel(initialViewState = viewStateWithMovieList)
 
             // Assert
-            assertViewStateSequence(
+            viewModelTestRule.assertViewStateSequence(
                 viewStateWithMovieList,
                 viewStateWithMovieList.copy(isRefreshing = true),
                 viewStateWithMovieList.copy(
@@ -167,7 +149,7 @@ class DiscoverMoviesViewModelTest {
                 aMovieItemsList.asResourceLoading(),
                 anError.asResourceError(aMovieItemsList)
             ).asFlow()
-            val viewStateWithMovieList = baseViewState.copy(
+            val viewStateWithMovieList = aBaseViewState.copy(
                 movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
             )
 
@@ -175,13 +157,13 @@ class DiscoverMoviesViewModelTest {
             intViewModel(initialViewState = viewStateWithMovieList)
 
             // Assert
-            assertViewStateSequence(
+            viewModelTestRule.assertViewStateSequence(
                 viewStateWithMovieList,
                 viewStateWithMovieList.copy(isRefreshing = true),
                 viewStateWithMovieList.copy(isRefreshing = false)
 
             )
-            hadEffect(
+            viewModelTestRule.hadEffect(
                 DiscoverMoviesViewEffect.ShowErrorMessage
             )
         }
@@ -203,28 +185,16 @@ class DiscoverMoviesViewModelTest {
             viewModel.tapOnMovie(aMovieId)
 
             // Assert
-            assertViewStateSequence(
-                baseViewState,
-                baseViewState.copy(isLoading = true),
-                baseViewState.copy(
+            viewModelTestRule.assertViewStateSequence(
+                aBaseViewState,
+                aBaseViewState.copy(isLoading = true),
+                aBaseViewState.copy(
                     isLoading = false,
                     movies = aMovieItemsList.map(MovieListUiItem.Factory::create)
                 )
             )
-            hadEffect(
+            viewModelTestRule.hadEffect(
                 DiscoverMoviesViewEffect.NavigateToDetail(aMovieId)
             )
         }
-
-    private fun hadEffect(effect: DiscoverMoviesViewEffect) {
-        verifySequence {
-            viewEffectObserver.onChanged(effect.asEvent())
-        }
-    }
-
-    private fun assertViewStateSequence(vararg viewStates: DiscoverMoviesViewState) {
-        verifySequence {
-            viewStates.forEach { viewStateObserver.onChanged(it) }
-        }
-    }
 }
