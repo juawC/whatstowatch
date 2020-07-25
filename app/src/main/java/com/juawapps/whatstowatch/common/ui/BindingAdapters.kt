@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import coil.size.ViewSizeResolver
 import com.juawapps.whatstowatch.common.domain.ImageUrl
@@ -50,3 +52,8 @@ fun backgroundTintColorAttr(textView: TextView, colorAttr: Int?) {
     textView.backgroundTintList = ColorStateList.valueOf(textView.context.getColorByAttr(colorAttr))
 }
 
+
+@BindingAdapter("setListItems")
+fun <T> setPosts(recyclerView: RecyclerView, list: List<T>?) {
+    (recyclerView.adapter as ListAdapter<T, *>).submitList(list)
+}

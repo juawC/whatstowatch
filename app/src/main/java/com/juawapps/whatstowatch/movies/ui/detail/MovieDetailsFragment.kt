@@ -31,27 +31,29 @@ class MovieDetailsFragment @Inject constructor(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentMovieDetailsBinding.inflate(inflater, container, false).run {
+    ): View? = FragmentMovieDetailsBinding.inflate(inflater, container, false).apply {
+        bindView(movieDetailsViewModel)
+        observeEffects(movieDetailsViewModel, ::viewEffectsActions)
+    }.root
+
+    private fun FragmentMovieDetailsBinding.bindView(
+        movieDetailsViewModel: MovieDetailsViewModel
+    ) {
         lifecycleOwner = viewLifecycleOwner
         viewActions = movieDetailsViewModel
         viewModel = movieDetailsViewModel
-        root
+        topAppBar.setUpToolbar()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUpToolbar(topAppBar)
-
-        observeEffects(movieDetailsViewModel) {
-            when (this) {
-                is MovieDetailsViewEffect.ShowErrorMessage -> showErrorSnackBar()
-            }
+    private fun viewEffectsActions(effect: MovieDetailsViewEffect) {
+        when (effect) {
+            is MovieDetailsViewEffect.ShowErrorMessage -> showErrorSnackBar()
         }
     }
 
-    private fun setUpToolbar(toolbar: Toolbar) {
+    private fun Toolbar.setUpToolbar() {
         val navController = findNavController()
-        toolbar.setupWithNavController(navController)
+        setupWithNavController(navController)
     }
 
     private fun showErrorSnackBar() {

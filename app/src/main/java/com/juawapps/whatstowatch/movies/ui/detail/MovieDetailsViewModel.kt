@@ -35,7 +35,7 @@ class MovieDetailsViewModel(
     private fun loadDetails() {
         viewModelScope.launch {
             viewStateStore.displayLoading()
-            getMovieDetailsUseCase.invoke(movieId).fold(
+            getMovieDetailsUseCase(movieId).fold(
                 ifFailure = { viewStateStore.displayError(it) },
                 ifSuccess = { viewStateStore.displayMovies(it) }
             )
@@ -43,17 +43,17 @@ class MovieDetailsViewModel(
     }
 
     private fun MoviesDetailStateStore.displayError(error: Throwable) {
-        val shouldErrorSateBePermanent = currentState.movie == MovieDetailsUiItem.EMPTY
+        val shouldErrorBeFullScreen = currentState.movie == MovieDetailsUiItem.EMPTY
 
         updateState {
             copy(
                 isLoading = false,
                 isRefreshing = false,
-                errorMessage = if (shouldErrorSateBePermanent) R.string.error_message else null
+                errorMessage = if (shouldErrorBeFullScreen) R.string.error_message else null
             )
         }
 
-        if (!shouldErrorSateBePermanent) sendEffect(MovieDetailsViewEffect.ShowErrorMessage)
+        if (!shouldErrorBeFullScreen) sendEffect(MovieDetailsViewEffect.ShowErrorMessage)
     }
 
     private fun MoviesDetailStateStore.displayMovies(

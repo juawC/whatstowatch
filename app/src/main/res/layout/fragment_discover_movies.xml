@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:setMovies="@{viewModel.viewState.movies}"
+                app:setListItems="@{viewModel.viewState.movies}"
                 tools:listitem="@layout/movie_list_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -27,11 +27,11 @@ open class DiscoverMoviesViewModel @Inject constructor(
     ViewStateStore<DiscoverMoviesViewState, DiscoverMoviesViewEffect> by viewStateStore,
     DiscoverMoviesViewActions {
 
-    private val fetchMoviesListChannel = Channel<Unit>(Channel.CONFLATED)
+    private val fetchMovieListChannel = Channel<Unit>(Channel.CONFLATED)
 
     init {
         viewModelScope.launch {
-            fetchMoviesListChannel.consumeAsFlow().flatMapLatest {
+            fetchMovieListChannel.consumeAsFlow().flatMapLatest {
                 discoverMoviesUseCase()
             }.collectResource(
                 ifSuccess = { data -> viewStateStore.displayMovies(data) },
@@ -40,7 +40,7 @@ open class DiscoverMoviesViewModel @Inject constructor(
             )
         }
 
-        viewModelScope.launch { fetchMoviesListChannel.send(Unit) }
+        viewModelScope.launch { fetchMovieListChannel.send(Unit) }
     }
 
     override fun tapOnMovie(movieId: Long) {
@@ -48,25 +48,25 @@ open class DiscoverMoviesViewModel @Inject constructor(
     }
 
     override fun refresh() {
-        viewModelScope.launch { fetchMoviesListChannel.send(Unit) }
+        viewModelScope.launch { fetchMovieListChannel.send(Unit) }
     }
 
     private fun DiscoverMoviesStateStore.displayError(
         error: Throwable,
         list: List<MovieListItem>
     ) {
-        val shouldErrorSateBePermanent = list.isEmpty()
+        val shouldErrorBeFullScreen = list.isEmpty()
 
         updateState {
             copy(
                 isLoading = false,
                 isRefreshing = false,
-                errorMessage = if (shouldErrorSateBePermanent) R.string.error_message else null,
+                errorMessage = if (shouldErrorBeFullScreen) R.string.error_message else null,
                 movies = list.map(MovieListUiItem.Factory::create)
             )
         }
 
-        if (!shouldErrorSateBePermanent) sendEffect(DiscoverMoviesViewEffect.ShowErrorMessage)
+        if (!shouldErrorBeFullScreen) sendEffect(DiscoverMoviesViewEffect.ShowErrorMessage)
     }
 
     private fun DiscoverMoviesStateStore.displayMovies(
